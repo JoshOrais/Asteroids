@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
+import engine.graphics.GameFont;
 import engine.graphics.Mesh;
 import engine.graphics.Shader;
 import engine.graphics.Texture;
@@ -17,7 +18,9 @@ public class ResourceLoader {
 	public static HashMap<String, Texture> textures = null;
 	
 	public static String loadFile(String fileName) throws Exception {
-
+//		String a = Class.forName(ResourceLoader.class.getName()).getProtectionDomain().getCodeSource().getLocation().getPath();
+//		System.out.println(a);
+//		System.out.println("^ is loading " + fileName);
         String result;
         try (InputStream in = Class.forName(ResourceLoader.class.getName()).getResourceAsStream(fileName);
                 Scanner scanner = new Scanner(in, "UTF-8")) {
@@ -28,6 +31,8 @@ public class ResourceLoader {
 	
 	public static BufferedImage loadImage(String fileName) throws Exception {
 		BufferedImage img = null;
+		String a = Class.forName(ResourceLoader.class.getName()).getProtectionDomain().getCodeSource().getLocation().getPath();
+		System.out.println(a);
         try ( InputStream iis = Class.forName(ResourceLoader.class.getName()).getResourceAsStream(fileName);){
         	img = ImageIO.read(new File(fileName));
         }
@@ -122,5 +127,10 @@ public class ResourceLoader {
 		}
 		
 		return quadMesh;
+	}
+	
+	public static GameFont buildFont(String file) throws Exception{
+		String f = loadFile(file);
+		return new GameFont().fromString(f);
 	}
 }

@@ -16,6 +16,8 @@ import engine.GameEntity;
 import engine.ResourceLoader;
 import engine.Window;
 import engine.graphics.Camera;
+import engine.graphics.GameFont;
+import engine.graphics.TextObject;
 import game.asteroids.PlayerShip;
 import game.asteroids.graphics.Background;
 import game.asteroids.graphics.Renderer;
@@ -31,6 +33,8 @@ public class AsteroidsGame extends Game {
 	private Renderer renderer;
 	private Matrix4f projectionMatrix;
 	private Background bg;
+	private GameFont font;
+	private TextObject to;
 	
 	private AsteroidsGame() {};
 	
@@ -39,6 +43,9 @@ public class AsteroidsGame extends Game {
 	public static final float GAME_WIDTH   = 128.0f, GAME_HEIGHT   = 72.0f;
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
+	
+	private boolean caps = true;
+	private int num = 0;
 
 	@Override
 	public void init() throws Exception {
@@ -67,6 +74,10 @@ public class AsteroidsGame extends Game {
 		bg.addLayer(ResourceLoader.getTexture("nebula"));
 		bg.addLayer(ResourceLoader.getTexture("planets"));
 		bg.addLayer(ResourceLoader.getTexture("stars"));
+		
+		font = ResourceLoader.buildFont("../res/shaders/font.font");
+		font.setTexture(ResourceLoader.getTexture("font"));
+		to = new TextObject("DEFAULT string", font);
 	}
 
 	@Override
@@ -96,7 +107,6 @@ public class AsteroidsGame extends Game {
 		moveCamera();
 		
 		
-//		cam.bound();
 	}
 
 	@Override
@@ -107,6 +117,21 @@ public class AsteroidsGame extends Game {
 		for (GameEntity entity : activeEntities) {
 			renderer.renderEntity(entity, cam);
 		}
+		
+		renderer.getEntityShader().bind();
+		if (caps) 
+			to.setText("default STRING");
+		else
+			to.setText("DEFAULT string");
+		if (++num > 60) {
+			num = 0;
+			caps = !caps;
+		}
+		
+		font.getTexture().bind();
+		Matrix4f model = new Matrix4f().identity().translate(15.0f, 15.0f, 0.0f).scale(1.0f);
+		renderer.getEntityShader().setUniformMatrix4f("model", model);
+		to.getMesh().render(renderer.getEntityShader());
 	}
 	
 	
@@ -122,7 +147,8 @@ public class AsteroidsGame extends Game {
 	}
 	
 	public void loadTextures() throws Exception{
-		ResourceLoader.addTexture("rocket","res/textures/player.png");		
+		ResourceLoader.addTexture("rocket","res/textures/player.png");	
+		ResourceLoader.addTexture("font","res/textures/font.png");			
 		ResourceLoader.addTexture("stars","res/textures/stars.png");
 		ResourceLoader.addTexture("planets","res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","res/textures/nebula.png");
