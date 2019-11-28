@@ -35,15 +35,15 @@ public class AsteroidsGame extends Game {
 	private Background bg;
 	private GameFont font;
 	private TextObject to;
-	
+
 	private AsteroidsGame() {};
-	
+
 	private static AsteroidsGame GAME = null;
 	public static final int   SCREEN_WIDTH = 1280,   SCREEN_HEIGHT = 720;
 	public static final float GAME_WIDTH   = 128.0f, GAME_HEIGHT   = 72.0f;
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
-	
+
 	private boolean caps = true;
 	private int num = 0;
 
@@ -51,30 +51,30 @@ public class AsteroidsGame extends Game {
 	public void init() throws Exception {
 		loadShaders();
 		loadTextures();
-		
+
 		renderer = new Renderer();
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
 		renderer.setBackgroundShader(ResourceLoader.getShader("background"));
-		
+
 		activeEntities = new ArrayList<GameEntity>();
 
 		cam = new Camera();
 		cam.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
-		
+
 		player = new PlayerShip();
 		player.setBounded(true);
 		player.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
 		activeEntities.add(player);
-		
+
 		projectionMatrix = new Matrix4f();
 		projectionMatrix.identity().ortho(0.0f, 128.0f, 0.0f, 72.0f, -1.0f, 1.0f);
 		renderer.setProjectionMatrix(projectionMatrix);
-		
+
 		bg = new Background(3);
 		bg.addLayer(ResourceLoader.getTexture("nebula"));
 		bg.addLayer(ResourceLoader.getTexture("planets"));
 		bg.addLayer(ResourceLoader.getTexture("stars"));
-		
+
 		font = ResourceLoader.buildFont("../res/shaders/font.font");
 		font.setTexture(ResourceLoader.getTexture("font"));
 		to = new TextObject("DEFAULT string", font);
@@ -85,10 +85,10 @@ public class AsteroidsGame extends Game {
         accelerating = window.isKeyPressed(GLFW_KEY_UP);
         if ( window.isKeyPressed(GLFW_KEY_LEFT) ) {
         	direction = 1;
-        } 
+        }
         else if ( window.isKeyPressed(GLFW_KEY_RIGHT) ) {
         	direction = -1;
-        } 
+        }
         else {
         	direction = 0;
         }
@@ -96,7 +96,7 @@ public class AsteroidsGame extends Game {
 
 	@Override
 	public void update(float timestep) {
-		
+
 		player.setDirection(direction);
 		if (accelerating) {
 			player.accelerate(timestep);
@@ -105,53 +105,53 @@ public class AsteroidsGame extends Game {
 		bg.move(player.getDeltaPosition(), timestep);
 		player.update(timestep);
 		moveCamera();
-		
-		
+
+
 	}
 
 	@Override
 	public void render(Window window) {
 		glClear(GL_COLOR_BUFFER_BIT);
 		renderer.renderBackground(bg);
-		
+
 		for (GameEntity entity : activeEntities) {
 			renderer.renderEntity(entity, cam);
 		}
-		
+
 		renderer.getEntityShader().bind();
-		if (caps) 
-			to.setText("default STRING");
+		if (caps)
+			to.setText("defaultSTRING");
 		else
-			to.setText("DEFAULT string");
+			to.setText("DEFAULTstring");
 		if (++num > 60) {
 			num = 0;
 			caps = !caps;
 		}
-		
+
 		font.getTexture().bind();
 		Matrix4f model = new Matrix4f().identity().translate(15.0f, 15.0f, 0.0f).scale(1.0f);
 		renderer.getEntityShader().setUniformMatrix4f("model", model);
 		to.getMesh().render(renderer.getEntityShader());
 	}
-	
-	
+
+
 	public void moveCamera() {
 		Vector2f m = new Vector2f(player.getPosition().x, player.getPosition().y);
 		m.sub(player.getDeltaPosition());
 		cam.setPosition(m.x, m.y);
 	}
-	
+
 	public void loadShaders() throws Exception{
 		ResourceLoader.addShader("background", "../res/shaders/foreground.vs", "../res/shaders/background.fs");
 		ResourceLoader.addShader("entity", "../res/shaders/foreground.vs", "../res/shaders/foreground.fs");
 	}
-	
+
 	public void loadTextures() throws Exception{
-		ResourceLoader.addTexture("rocket","res/textures/player.png");	
-		ResourceLoader.addTexture("font","res/textures/font.png");			
-		ResourceLoader.addTexture("stars","res/textures/stars.png");
-		ResourceLoader.addTexture("planets","res/textures/planets.png");
-		ResourceLoader.addTexture("nebula","res/textures/nebula.png");
+		ResourceLoader.addTexture("rocket","../res/textures/player.png");
+		ResourceLoader.addTexture("font","../res/textures/font.png");
+		ResourceLoader.addTexture("stars","../res/textures/stars.png");
+		ResourceLoader.addTexture("planets","../res/textures/planets.png");
+		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
 	}
 
 	public static AsteroidsGame getGame() {

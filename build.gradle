@@ -21,8 +21,8 @@ repositories {
 
 dependencies {
 	implementation "org.joml:joml:1.9.19"
-	
-	
+
+
 	implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
 	implementation "org.lwjgl:lwjgl"
@@ -100,6 +100,7 @@ dependencies {
 sourceSets {
         main.java.srcDirs = ['src/']
         main.resources.srcDirs = ['res/']
+        main.output.resourcesDir = file('build/classes/java/main/res')
 }
 
 application {
@@ -111,4 +112,3 @@ jar {
 		attributes 'Main-Class' : 'game.Main'
 	}
 }
-
