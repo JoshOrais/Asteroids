@@ -103,6 +103,12 @@ sourceSets {
 }
 
 application {
-    // Define the main class for the application.
-    mainClassName = 'game.Main'
+	mainClassName 'game.Main'
 }
+
+jar {
+	manifest {
+		attributes 'Main-Class' : 'game.Main'
+	}
+}
+
