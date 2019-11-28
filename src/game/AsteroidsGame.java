@@ -77,7 +77,7 @@ public class AsteroidsGame extends Game {
 
 		font = ResourceLoader.buildFont("../res/shaders/font.font");
 		font.setTexture(ResourceLoader.getTexture("font"));
-		to = new TextObject("DEFAULT string", font);
+		to = new TextObject("DEFAULTstring", font);
 	}
 
 	@Override
