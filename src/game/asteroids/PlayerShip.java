@@ -12,7 +12,7 @@ public class PlayerShip extends AsteroidsGameObject{
 	public static final float ACCELERATION = 9.8f;
 	public static final float HANDLING = 100.0f;
 	private int direction;
-	
+
 	public PlayerShip() {
 		scale = 7.0f;
 		angle = 0.0f;
@@ -20,34 +20,29 @@ public class PlayerShip extends AsteroidsGameObject{
 		this.max_velocity = MAX_VELOCITY;
 		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
 	}
-	
+
 	public void setDirection(int direction) {
 		this.direction = direction;
-	}	
-	
+	}
+
 	public void killVelocity() {
 		velocity.x = 0;
 		velocity.y = 0;
 	}
-	
+
 	public void accelerate(float timestep) {
 		Vector2f aforce = new Vector2f();
 		aforce.x = timestep * ACCELERATION * (float)Math.cos(Math.toRadians(angle));
 		aforce.y = timestep * ACCELERATION * (float)Math.sin(Math.toRadians(angle));
 		addForce(aforce);
 	}
-	
+
 	@Override
 	public void update(float interval) {
 		angle += (float)direction * HANDLING * interval;
-		super.update(interval); //physics object update
+		move(interval); //physics object update
 		sprite.update(interval);
 		rotation = angle;
-	}
-
-	@Override
-	public void render(Shader s) {
-		
 	}
 
 }

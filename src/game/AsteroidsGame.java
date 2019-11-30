@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import engine.Game;
 import engine.GameEntity;
@@ -19,13 +20,16 @@ import engine.graphics.Camera;
 import engine.graphics.GameFont;
 import engine.graphics.TextObject;
 import game.asteroids.PlayerShip;
+import game.asteroids.entities.*;
+import game.asteroids.AsteroidsGameObject;
+import game.asteroids.QuadTree;
 import game.asteroids.graphics.Background;
 import game.asteroids.graphics.Renderer;
 
 public class AsteroidsGame extends Game {
 	// so much shit
 	// delet this
-	private ArrayList<GameEntity> activeEntities;
+	private ArrayList<AsteroidsGameObject> activeEntities;
 	private Camera cam;
 	private PlayerShip player;
 	private boolean accelerating;
@@ -56,7 +60,7 @@ public class AsteroidsGame extends Game {
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
 		renderer.setBackgroundShader(ResourceLoader.getShader("background"));
 
-		activeEntities = new ArrayList<GameEntity>();
+		activeEntities = new ArrayList<AsteroidsGameObject>();
 
 		cam = new Camera();
 		cam.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
@@ -78,6 +82,12 @@ public class AsteroidsGame extends Game {
 		font = ResourceLoader.buildFont("../res/shaders/font.font");
 		font.setTexture(ResourceLoader.getTexture("font"));
 		to = new TextObject("DEFAULTstring", font);
+
+		for (int i = 0; i < 255; ++i){
+			Vector3f loc = new Vector3f((float)Math.random() * 100.0f,(float)Math.random() * 100.0f, 0.0f);
+			Vector2f vel = new Vector2f((float)Math.random() * 20.0f,(float)Math.random() * 20.0f);
+			activeEntities.add(new Asteroid(loc, vel, 10.0f));
+		}
 	}
 
 	@Override
@@ -103,10 +113,20 @@ public class AsteroidsGame extends Game {
 		}
 
 		bg.move(player.getDeltaPosition(), timestep);
-		player.update(timestep);
 		moveCamera();
 
+		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
+		for (AsteroidsGameObject E : activeEntities){
+			E.update(timestep);
+			qt.insert(E);
+		}
 
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 100.0f);
+		for (AsteroidsGameObject a : d){
+			if (a instanceof Asteroid){
+				((Asteroid)a).change();
+			}
+		}
 	}
 
 	@Override
@@ -153,6 +173,7 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("stars","../res/textures/stars.png");
 		ResourceLoader.addTexture("planets","../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
+		ResourceLoader.addTexture("default","../res/textures/yay.png");
 	}
 
 	public void dispose(){

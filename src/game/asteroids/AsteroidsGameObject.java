@@ -15,7 +15,7 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	protected AnimatedSprite sprite;
 	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10;
 	private boolean bounded = true;
-
+	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
 
 	public void setBounded(boolean bounded) {
 		this.bounded = bounded;
@@ -52,18 +52,29 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	}
 
 	public HitBox getHitBox(){
-		return null;
+		return hitbox;
 	}
 
-	@Override
-	public void update(float interval) {
+	public void setVelocity(Vector2f v){
+		velocity.x = v.x;
+		velocity.y = v.y;
+	}
+
+	public void setHitBoxRadius(float r){
+		hitbox.setRadius(r);
+	}
+
+	public void move(float interval) {
 		deltaPos.x = velocity.x;
 		deltaPos.y = velocity.y;
+
+		// System.out.println(velocity.x);
 
 		velocity.add(acceleration);
 		if (velocity.length() > max_velocity)
 			velocity.normalize().mul(max_velocity);
 		position.add(new Vector3f(velocity, 0.0f));
+		hitbox.setCenter(position.x, position.y);
 		acceleration.zero();
 
 		if (bounded) {

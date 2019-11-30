@@ -27,12 +27,18 @@ public class HitBox {
 		return position.y;
 	}
 
-	public Vector2f getPosition() {
-		return position;
+	public void setCenter(Vector2f v){
+		position.x = v.x;
+		position.y = v.y;
 	}
 
-	public void setPosition(Vector2f position) {
-		this.position = position;
+	public void setCenter(float x, float y){
+		position.x = x;
+		position.y = y;
+	}
+
+	public Vector2f getPosition() {
+		return position;
 	}
 
 	public float getRadius() {

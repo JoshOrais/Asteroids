@@ -48,7 +48,6 @@ public class GameFont {
 	public Mesh buildMesh(String str) {
 		ArrayList<Float> vertices = new ArrayList<Float>();
 		ArrayList<Float> texcoords = new ArrayList<Float>();
-		System.out.println(str);
 
 		float startx = 0;
 		for (char c: str.toCharArray()) {

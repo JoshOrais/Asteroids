@@ -15,9 +15,11 @@ public class QuadTree{
     root.insert(e);
   }
 
-  public void queryCircle(Vector2f circleCenter, float radius){
+  public ArrayList<AsteroidsGameObject> queryCircle(Vector2f circleCenter, float radius){
     HitBox m = new HitBox(circleCenter, radius);
-    root.queryCircle(m, new ArrayList<AsteroidsGameObject>());
+    ArrayList<AsteroidsGameObject> ar = new ArrayList<AsteroidsGameObject>();
+    ar = root.queryCircle(m, ar);
+    return ar;
   }
 
   private class Quad{
@@ -46,12 +48,12 @@ public class QuadTree{
             return false;
       }
 
-      if (cursor < objects.length && !isDivided()){
+      if (cursor < objects.length){
         objects[cursor++] = e;
         return true;
       }
 
-      if (!isDivided()) divide();
+      if (TL == null) divide();
 
       if (TL.insert(e)) return true;
       if (TR.insert(e)) return true;
@@ -68,7 +70,7 @@ public class QuadTree{
       BR = new Quad(x1 + (x2 - x1) /2.0f, y1 + (y2 - y1) /2.0f, x2                  , y2                  );
     }
 
-    public ArrayList queryCircle(HitBox box, ArrayList result){
+    public ArrayList queryCircle(HitBox box, ArrayList<AsteroidsGameObject> result){
       if (!this.insersectsCircle(box.position, box.radius))
         return result;
 
