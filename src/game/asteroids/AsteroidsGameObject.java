@@ -51,6 +51,10 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		acceleration.add(F);
 	}
 
+	public HitBox getHitBox(){
+		return null;
+	}
+
 	@Override
 	public void update(float interval) {
 		deltaPos.x = velocity.x;

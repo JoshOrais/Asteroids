@@ -8,14 +8,23 @@ import game.AsteroidsGame;
 public class HitBox {
 	public Vector2f position;
 	public float radius;
-	
+
 	public HitBox(Vector2f center, float radius) {
-		
+		this.position = center;
+		this.radius = radius;
 	}
-	
+
 	public boolean intersects(HitBox b) {
 		/// hahaahahahahhahahahaha
 		return MathHelper.toroidalDistance(position, b.getPosition(), AsteroidsGame.GAME_WIDTH, AsteroidsGame.GAME_HEIGHT) < (radius + b.getRadius());
+	}
+
+	public float getCenterX(){
+		return position.x;
+	}
+
+	public float getCenterY(){
+		return position.y;
 	}
 
 	public Vector2f getPosition() {
