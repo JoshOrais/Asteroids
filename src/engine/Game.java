@@ -5,4 +5,5 @@ public abstract class Game {
 	public abstract void input(Window window);
 	public abstract void update(float timestep);
 	public abstract void render(Window window);
+	public abstract void dispose();
 }

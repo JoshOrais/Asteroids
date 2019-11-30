@@ -148,10 +148,16 @@ public class AsteroidsGame extends Game {
 
 	public void loadTextures() throws Exception{
 		ResourceLoader.addTexture("rocket","../res/textures/player.png");
+		// ResourceLoader.addTexture("asteroid","../res/textures/asteroid.png");
 		ResourceLoader.addTexture("font","../res/textures/font.png");
 		ResourceLoader.addTexture("stars","../res/textures/stars.png");
 		ResourceLoader.addTexture("planets","../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
+	}
+
+	public void dispose(){
+		ResourceLoader.disposeShaders();
+		ResourceLoader.disposeTextures();
 	}
 
 	public static AsteroidsGame getGame() {
