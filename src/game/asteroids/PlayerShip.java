@@ -8,8 +8,8 @@ import game.asteroids.graphics.StaticSprite;
 
 public class PlayerShip extends AsteroidsGameObject{
 	private float angle;
-	public static final float MAX_VELOCITY = 25.0f;
-	public static final float ACCELERATION = 9.8f;
+	public static final float MAX_VELOCITY = 13.0f;
+	public static final float ACCELERATION = 3.8f;
 	public static final float HANDLING = 100.0f;
 	private int direction;
 

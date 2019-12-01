@@ -18,7 +18,8 @@ public class QuadTree{
   public ArrayList<AsteroidsGameObject> queryCircle(Vector2f circleCenter, float radius){
     HitBox m = new HitBox(circleCenter, radius);
     ArrayList<AsteroidsGameObject> ar = new ArrayList<AsteroidsGameObject>();
-    ar = root.queryCircle(m, ar);
+    root.queryCircle(m, ar);
+    System.out.println("ArrayList size " + ar.size());
     return ar;
   }
 
@@ -48,7 +49,7 @@ public class QuadTree{
             return false;
       }
 
-      if (cursor < objects.length){
+      if (cursor < objects.length && TL == null){
         objects[cursor++] = e;
         return true;
       }
@@ -74,12 +75,14 @@ public class QuadTree{
       if (!this.insersectsCircle(box.position, box.radius))
         return result;
 
-      for (AsteroidsGameObject e: objects){
-        if (e.getHitBox().intersects(box))
-          result.add(e);
+      for (int i = 0; i < cursor; ++i){
+        if (objects[i].getHitBox().intersects(box)) {
+            result.add(objects[i]);
+            // System.out.println("COLLIDED");
+        }
       }
 
-      if (isDivided()){
+      if (TL != null){
         TL.queryCircle(box, result);
         TR.queryCircle(box, result);
         BL.queryCircle(box, result);
@@ -90,10 +93,7 @@ public class QuadTree{
     }
 
     public boolean insersectsCircle(Vector2f center, float radius){
-      return (MathHelper.pointIntersectsCircle(x1, y1, center.x, center.y, radius) ||
-              MathHelper.pointIntersectsCircle(x1, y2, center.x, center.y, radius) ||
-              MathHelper.pointIntersectsCircle(x2, y1, center.x, center.y, radius) ||
-              MathHelper.pointIntersectsCircle(x2, y2, center.x, center.y, radius));
+      return MathHelper.rectIntersectsCircle(x1, y1, x2, y2, center.x, center.y, radius);
     }
 
     public Quad getBottomLeft() {return BL;}

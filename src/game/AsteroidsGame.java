@@ -121,7 +121,7 @@ public class AsteroidsGame extends Game {
 			qt.insert(E);
 		}
 
-		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 100.0f);
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 5.0f);
 		for (AsteroidsGameObject a : d){
 			if (a instanceof Asteroid){
 				((Asteroid)a).change();

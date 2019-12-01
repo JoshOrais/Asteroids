@@ -22,4 +22,10 @@ public class MathHelper {
 	public static boolean pointIntersectsCircle(float x, float y, float c_x, float c_y, float radius){
 		return distance(x, y, c_x, c_y) <= radius;
 	}
+
+	public static boolean rectIntersectsCircle(float rx1, float ry1, float rx2, float ry2, float cx, float cy, float radius){
+		float dx = cx - Math.max(rx1, Math.min(cx, rx2));
+		float dy = cy - Math.max(ry1, Math.min(cy, ry2));
+		return (dx * dx + dy * dy) < radius * radius;
+	}
 }
