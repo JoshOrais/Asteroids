@@ -16,6 +16,7 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10;
 	private boolean bounded = true;
 	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
+	public boolean alive = true;
 
 	public void setBounded(boolean bounded) {
 		this.bounded = bounded;
@@ -23,6 +24,14 @@ public abstract class AsteroidsGameObject extends GameEntity {
 
 	public Vector2f getAcceleration() {
 		return acceleration;
+	}
+
+	public boolean isDead(){
+		return !alive;
+	}
+
+	public void kill(){
+		alive = false;
 	}
 
 	public void setSprite(AnimatedSprite sprite) {

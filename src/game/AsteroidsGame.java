@@ -29,7 +29,7 @@ import game.asteroids.graphics.Renderer;
 public class AsteroidsGame extends Game {
 	// so much shit
 	// delet this
-	private ArrayList<AsteroidsGameObject> activeEntities;
+	private ArrayList<AsteroidsGameObject> activeEntities, deadEntities;
 	private Camera cam;
 	private PlayerShip player;
 	private boolean accelerating;
@@ -45,6 +45,7 @@ public class AsteroidsGame extends Game {
 	private static AsteroidsGame GAME = null;
 	public static final int   SCREEN_WIDTH = 1280,   SCREEN_HEIGHT = 720;
 	public static final float GAME_WIDTH   = 128.0f, GAME_HEIGHT   = 72.0f;
+	//this maybe should not be static final
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
 
@@ -61,6 +62,7 @@ public class AsteroidsGame extends Game {
 		renderer.setBackgroundShader(ResourceLoader.getShader("background"));
 
 		activeEntities = new ArrayList<AsteroidsGameObject>();
+		deadEntities = new ArrayList<AsteroidsGameObject>();
 
 		cam = new Camera();
 		cam.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
@@ -117,8 +119,12 @@ public class AsteroidsGame extends Game {
 
 		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
 		for (AsteroidsGameObject E : activeEntities){
+			if (E.isDead()) {
+				deadEntities.add(E);
+				continue;
+			}
 			E.update(timestep);
-			qt.insert(E);
+			if (E instanceof Collidable) qt.add(E);
 		}
 
 		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 5.0f);
@@ -127,6 +133,10 @@ public class AsteroidsGame extends Game {
 				((Asteroid)a).change();
 			}
 		}
+
+		activeEntities.removeAll(deadEntities);
+		deadEntities.clear();
+
 	}
 
 	@Override
