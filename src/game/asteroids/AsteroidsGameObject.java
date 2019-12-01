@@ -16,6 +16,7 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10;
 	private boolean bounded = true;
 	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
+	protected boolean collided;
 	public boolean alive = true;
 
 	public void setBounded(boolean bounded) {
@@ -71,6 +72,27 @@ public abstract class AsteroidsGameObject extends GameEntity {
 
 	public void setHitBoxRadius(float r){
 		hitbox.setRadius(r);
+	}
+
+	public abstract void collisionAction(AsteroidsGameObject K);
+
+	public void setCollided(boolean collided){
+		this.collided = collided;
+	}
+
+	public boolean isCollided(){
+		return collided;
+	}
+
+	public void collideWith(AsteroidsGameObject K){
+		if (isDead()) return;
+
+		if (K.isCollided()) return;
+
+		if (K.getHitBox().intersects(getHitBox())){
+			collisionAction(K);
+			K.collisionAction(this);
+		}
 	}
 
 	public void move(float interval) {

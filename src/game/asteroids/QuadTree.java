@@ -19,7 +19,7 @@ public class QuadTree{
     HitBox m = new HitBox(circleCenter, radius);
     ArrayList<AsteroidsGameObject> ar = new ArrayList<AsteroidsGameObject>();
     root.queryCircle(m, ar);
-    System.out.println("ArrayList size " + ar.size());
+    // System.out.println("ArrayList size " + ar.size());
     return ar;
   }
 

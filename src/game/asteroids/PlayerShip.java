@@ -18,6 +18,7 @@ public class PlayerShip extends AsteroidsGameObject{
 		angle = 0.0f;
 		direction = 0;
 		this.max_velocity = MAX_VELOCITY;
+		this.hitbox = new HitBox(position, scale);
 		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
 	}
 
@@ -43,6 +44,10 @@ public class PlayerShip extends AsteroidsGameObject{
 		move(interval); //physics object update
 		sprite.update(interval);
 		rotation = angle;
+	}
+
+	public void collisionAction(AsteroidsGameObject K){
+
 	}
 
 }

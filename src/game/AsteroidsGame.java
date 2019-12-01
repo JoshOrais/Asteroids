@@ -119,19 +119,18 @@ public class AsteroidsGame extends Game {
 
 		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
 		for (AsteroidsGameObject E : activeEntities){
+			E.setCollided(false);
 			if (E.isDead()) {
 				deadEntities.add(E);
 				continue;
 			}
 			E.update(timestep);
-			if (E instanceof Collidable) qt.add(E);
+			qt.insert(E);
 		}
 
-		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 5.0f);
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 1.0f);
 		for (AsteroidsGameObject a : d){
-			if (a instanceof Asteroid){
-				((Asteroid)a).change();
-			}
+			a.collideWith(player);
 		}
 
 		activeEntities.removeAll(deadEntities);

@@ -1,6 +1,7 @@
 package game.asteroids;
 
 import org.joml.Vector2f;
+import org.joml.Vector3f;
 
 import game.AsteroidsGame;
 
@@ -12,6 +13,10 @@ public class HitBox {
 	public HitBox(Vector2f center, float radius) {
 		this.position = center;
 		this.radius = radius;
+	}
+
+	public HitBox(Vector3f center, float radius){
+		this(new Vector2f(center.x, center.y), radius);
 	}
 
 	public boolean intersects(HitBox b) {

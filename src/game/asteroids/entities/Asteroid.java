@@ -3,6 +3,7 @@ package game.asteroids.entities;
 import org.joml.*;
 import game.asteroids.AsteroidsGameObject;
 import game.asteroids.graphics.*;
+import game.asteroids.HitBox;
 import engine.ResourceLoader;
 
 public class Asteroid extends AsteroidsGameObject{
@@ -15,6 +16,7 @@ public class Asteroid extends AsteroidsGameObject{
     this.scale = radius;
     this.velocity = velocity;
     this.max_velocity = 0.5f;
+    this.hitbox = new HitBox(this.position, scale);
 		setBounds(-3000.f, -300.f, 3000.f, 300.f);
 		setSprite(new StaticSprite(ResourceLoader.getTexture("default")));
   }
@@ -26,5 +28,10 @@ public class Asteroid extends AsteroidsGameObject{
   @Override
   public void update(float interval){
     this.move(interval);
+  }
+
+  public void collisionAction(AsteroidsGameObject K){
+    System.out.println("WTF");
+    this.kill();
   }
 }
