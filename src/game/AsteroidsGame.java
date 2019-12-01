@@ -2,6 +2,7 @@ package game;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
@@ -29,10 +30,10 @@ import game.asteroids.graphics.Renderer;
 public class AsteroidsGame extends Game {
 	// so much shit
 	// delet this
-	private ArrayList<AsteroidsGameObject> activeEntities, deadEntities;
+	private ArrayList<AsteroidsGameObject> activeEntities, deadEntities, queuedEntities;
 	private Camera cam;
 	private PlayerShip player;
-	private boolean accelerating;
+	private boolean accelerating, firing;
 	private int direction;
 	private Renderer renderer;
 	private Matrix4f projectionMatrix;
@@ -63,6 +64,7 @@ public class AsteroidsGame extends Game {
 
 		activeEntities = new ArrayList<AsteroidsGameObject>();
 		deadEntities = new ArrayList<AsteroidsGameObject>();
+		queuedEntities = new ArrayList<AsteroidsGameObject>();
 
 		cam = new Camera();
 		cam.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
@@ -104,6 +106,13 @@ public class AsteroidsGame extends Game {
         else {
         	direction = 0;
         }
+
+				if ( window.isKeyPressed(GLFW_KEY_SPACE)){
+					firing = true;
+				}
+				else {
+					firing = false;
+				}
 	}
 
 	@Override
@@ -114,10 +123,18 @@ public class AsteroidsGame extends Game {
 			player.accelerate(timestep);
 		}
 
+		if (firing){
+			player.fire();
+		}
+
 		bg.move(player.getDeltaPosition(), timestep);
 		moveCamera();
 
 		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
+
+		activeEntities.addAll(queuedEntities);
+		queuedEntities.clear();
+
 		for (AsteroidsGameObject E : activeEntities){
 			E.setCollided(false);
 			if (E.isDead()) {
@@ -127,6 +144,7 @@ public class AsteroidsGame extends Game {
 			E.update(timestep);
 			qt.insert(E);
 		}
+
 
 		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 1.0f);
 		for (AsteroidsGameObject a : d){
@@ -168,6 +186,14 @@ public class AsteroidsGame extends Game {
 		Vector2f m = new Vector2f(player.getPosition().x, player.getPosition().y);
 		m.sub(player.getDeltaPosition());
 		cam.setPosition(m.x, m.y);
+	}
+
+	public PlayerShip getPlayer(){
+		return player;
+	}
+
+	public void addEntity(AsteroidsGameObject E){
+		queuedEntities.add(E);
 	}
 
 	public void loadShaders() throws Exception{

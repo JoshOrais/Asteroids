@@ -119,5 +119,4 @@ public abstract class AsteroidsGameObject extends GameEntity {
 				position.y = ymax + position.y  - ymin;
 		}
 	}
-
 }

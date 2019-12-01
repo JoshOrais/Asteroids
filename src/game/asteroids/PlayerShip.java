@@ -12,6 +12,7 @@ public class PlayerShip extends AsteroidsGameObject{
 	public static final float ACCELERATION = 3.8f;
 	public static final float HANDLING = 100.0f;
 	private int direction;
+	private Behavior firingBehaviour;
 
 	public PlayerShip() {
 		scale = 7.0f;
@@ -20,6 +21,7 @@ public class PlayerShip extends AsteroidsGameObject{
 		this.max_velocity = MAX_VELOCITY;
 		this.hitbox = new HitBox(position, scale);
 		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
+		setFiringBehaviour(FiringBehaviours.getNormalBulletBehaviour());
 	}
 
 	public void setDirection(int direction) {
@@ -36,6 +38,16 @@ public class PlayerShip extends AsteroidsGameObject{
 		aforce.x = timestep * ACCELERATION * (float)Math.cos(Math.toRadians(angle));
 		aforce.y = timestep * ACCELERATION * (float)Math.sin(Math.toRadians(angle));
 		addForce(aforce);
+	}
+
+	public void fire(){
+		float x = 1.0f;
+		float y = 1.0f;
+		firingBehaviour.execute(new Vector2f(position.x, position.y), new Vector2f(x,y));
+	}
+
+	public void setFiringBehaviour(Behavior B){
+		this.firingBehaviour = B;
 	}
 
 	@Override
