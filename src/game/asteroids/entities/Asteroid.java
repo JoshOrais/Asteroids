@@ -31,7 +31,6 @@ public class Asteroid extends AsteroidsGameObject{
   }
 
   public void collisionAction(AsteroidsGameObject K){
-    System.out.println("WTF");
     this.kill();
   }
 }

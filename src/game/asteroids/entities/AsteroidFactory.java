@@ -16,13 +16,34 @@ public class AsteroidFactory{
     return new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_LARGE);
   }
 
+  public static Asteroid createLargeAsteroid(float x, float y, float velocity_x, float velocity_y){
+    return createLargeAsteroid(new Vector2f(x, y), new Vector2f(velocity_x, velocity_y));
+  }
+
   public static Asteroid createMediumAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_MEDIUM);
     return new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_MEDIUM);
   }
 
+  public static Asteroid createMediumAsteroid(float x, float y, float velocity_x, float velocity_y){
+    return createMediumAsteroid(new Vector2f(x, y), new Vector2f(velocity_x, velocity_y));
+  }
+
   public static Asteroid createSmallAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_SMALL);
     return new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_SMALL);
+  }
+
+  public static Asteroid createSmallAsteroid(float x, float y, float velocity_x, float velocity_y){
+    return createSmallAsteroid(new Vector2f(x, y), new Vector2f(velocity_x, velocity_y));
+  }
+
+  public static Asteroid createLargeAsteroidWithinBounds(float xmin, float ymin, float xmax, float ymax){
+    float xPos = (float)Math.random() * (float)(xmax - xmin) + xmin;
+    float yPos = (float)Math.random() * (float)(ymax - ymin) + ymin;
+    float xVel = (float)Math.random() * 200.f - 100.f;
+    float yVel = (float)Math.random() * 200.f - 100.f;
+
+    return createLargeAsteroid(xPos, yPos, xVel, yVel);
   }
 }

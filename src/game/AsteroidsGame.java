@@ -118,15 +118,6 @@ public class AsteroidsGame extends Game {
 	@Override
 	public void update(float timestep) {
 
-		player.setDirection(direction);
-		if (accelerating) {
-			player.accelerate(timestep);
-		}
-
-		if (firing){
-			player.fire();
-		}
-
 		bg.move(player.getDeltaPosition(), timestep);
 		moveCamera();
 
@@ -145,10 +136,21 @@ public class AsteroidsGame extends Game {
 			qt.insert(E);
 		}
 
+		if (firing){
+			player.fire();
+		} 
+		player.setDirection(direction);
+		if (accelerating) {
+			player.accelerate(timestep);
+		}
+
 
 		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 1.0f);
 		for (AsteroidsGameObject a : d){
-			a.collideWith(player);
+			for (AsteroidsGameObject b : d){
+				if (a != b)
+					a.collideWith(b);
+			}
 		}
 
 		activeEntities.removeAll(deadEntities);
@@ -208,6 +210,7 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("stars","../res/textures/stars.png");
 		ResourceLoader.addTexture("planets","../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
+		ResourceLoader.addTexture("bullet","../res/textures/try.png");
 		ResourceLoader.addTexture("default","../res/textures/yay.png");
 	}
 

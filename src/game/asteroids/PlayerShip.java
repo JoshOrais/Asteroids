@@ -8,7 +8,7 @@ import game.asteroids.graphics.StaticSprite;
 
 public class PlayerShip extends AsteroidsGameObject{
 	private float angle;
-	public static final float MAX_VELOCITY = 13.0f;
+	public static final float MAX_VELOCITY = 4.0f;
 	public static final float ACCELERATION = 3.8f;
 	public static final float HANDLING = 100.0f;
 	private int direction;
@@ -41,9 +41,13 @@ public class PlayerShip extends AsteroidsGameObject{
 	}
 
 	public void fire(){
-		float x = 1.0f;
-		float y = 1.0f;
-		firingBehaviour.execute(new Vector2f(position.x, position.y), new Vector2f(x,y));
+		float x = (float)Math.cos(Math.toRadians(angle));
+		float y = (float)Math.sin(Math.toRadians(angle));
+		Vector2f target = new Vector2f(x, y).mul(scale);
+		Vector2f location = new Vector2f(position.x, position.y).add(target);
+		firingBehaviour.setLocation(position.x, position.y);
+		firingBehaviour.setTarget(target);
+		firingBehaviour.execute();
 	}
 
 	public void setFiringBehaviour(Behavior B){
