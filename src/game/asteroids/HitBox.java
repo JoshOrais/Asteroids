@@ -21,7 +21,7 @@ public class HitBox {
 
 	public boolean intersects(HitBox b) {
 		/// hahaahahahahhahahahaha
-		return MathHelper.toroidalDistance(position, b.getPosition(), AsteroidsGame.GAME_WIDTH, AsteroidsGame.GAME_HEIGHT) < (radius + b.getRadius());
+		return MathHelper.toroidalDistance(position, b.getPosition(), AsteroidsGame.GAME_BOUNDS_WIDTH, AsteroidsGame.GAME_BOUNDS_HEIGHT) < (radius + b.getRadius());
 	}
 
 	public float getCenterX(){

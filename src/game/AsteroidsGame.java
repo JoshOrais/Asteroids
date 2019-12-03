@@ -48,7 +48,10 @@ public class AsteroidsGame extends Game {
 	public static final float GAME_WIDTH   = 128.0f, GAME_HEIGHT   = 72.0f;
 	//this maybe should not be static final
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
-							  GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
+							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
+
+	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
+			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
 
 	private boolean caps = true;
 	private int num = 0;
@@ -128,6 +131,7 @@ public class AsteroidsGame extends Game {
 
 		for (AsteroidsGameObject E : activeEntities){
 			E.setCollided(false);
+
 			if (E.isDead()) {
 				deadEntities.add(E);
 				continue;
@@ -138,18 +142,20 @@ public class AsteroidsGame extends Game {
 
 		if (firing){
 			player.fire();
-		} 
+		}
 		player.setDirection(direction);
 		if (accelerating) {
 			player.accelerate(timestep);
 		}
 
 
-		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 1.0f);
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 100.0f);
 		for (AsteroidsGameObject a : d){
 			for (AsteroidsGameObject b : d){
 				if (a != b)
 					a.collideWith(b);
+				if (a instanceof game.asteroids.entities.PlayerBullet)
+					System.out.println("BULLTEr");
 			}
 		}
 

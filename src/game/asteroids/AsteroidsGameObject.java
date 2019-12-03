@@ -92,6 +92,9 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		if (K.getHitBox().intersects(getHitBox())){
 			collisionAction(K);
 			K.collisionAction(this);
+
+			setCollided(true);
+			K.setCollided(true);
 		}
 	}
 
@@ -105,7 +108,6 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		if (velocity.length() > max_velocity)
 			velocity.normalize().mul(max_velocity);
 		position.add(new Vector3f(velocity, 0.0f));
-		hitbox.setCenter(position.x, position.y);
 		acceleration.zero();
 
 		if (bounded) {
@@ -118,5 +120,8 @@ public abstract class AsteroidsGameObject extends GameEntity {
 			if (position.y < ymin)
 				position.y = ymax + position.y  - ymin;
 		}
+
+		if (hitbox != null)
+			hitbox.setCenter(position.x, position.y);
 	}
 }

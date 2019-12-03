@@ -44,8 +44,8 @@ public class QuadTree{
     public boolean insert(AsteroidsGameObject e){
       //check if e is inside this quad;
 
-      if (e.getHitBox().getCenterX() < x1 || e.getHitBox().getCenterX() > x2 ||
-          e.getHitBox().getCenterY() < y1 || e.getHitBox().getCenterY() > y2 ){
+      if (e.getHitBox().getCenterX() <= x1 || e.getHitBox().getCenterX() > x2 ||
+          e.getHitBox().getCenterY() <= y1 || e.getHitBox().getCenterY() > y2 ){
             return false;
       }
 
@@ -76,9 +76,12 @@ public class QuadTree{
         return result;
 
       for (int i = 0; i < cursor; ++i){
+        if (objects[i] instanceof game.asteroids.entities.PlayerBullet)
+          System.out.println("BULLET CHECKED");
         if (objects[i].getHitBox().intersects(box)) {
             result.add(objects[i]);
-            // System.out.println("COLLIDED");
+              if (objects[i] instanceof game.asteroids.entities.Asteroid)
+                System.out.println("ASTEROID CHECKED");
         }
       }
 

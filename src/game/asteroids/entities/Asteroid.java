@@ -15,9 +15,9 @@ public class Asteroid extends AsteroidsGameObject{
     this.radius = radius;
     this.scale = radius;
     this.velocity = velocity;
-    this.max_velocity = 0.5f;
+    this.max_velocity = 0.0f;
     this.hitbox = new HitBox(this.position, scale);
-		setBounds(-3000.f, -300.f, 3000.f, 300.f);
+		setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
 		setSprite(new StaticSprite(ResourceLoader.getTexture("default")));
   }
 
@@ -31,6 +31,7 @@ public class Asteroid extends AsteroidsGameObject{
   }
 
   public void collisionAction(AsteroidsGameObject K){
-    this.kill();
+    if (!(K instanceof Asteroid))
+      this.kill();
   }
 }

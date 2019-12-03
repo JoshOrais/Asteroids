@@ -44,7 +44,8 @@ public class PlayerShip extends AsteroidsGameObject{
 		float x = (float)Math.cos(Math.toRadians(angle));
 		float y = (float)Math.sin(Math.toRadians(angle));
 		Vector2f target = new Vector2f(x, y).mul(scale);
-		Vector2f location = new Vector2f(position.x, position.y).add(target);
+		Vector2f location = new Vector2f(position.x, position.y);
+		target.add(velocity);
 		firingBehaviour.setLocation(position.x, position.y);
 		firingBehaviour.setTarget(target);
 		firingBehaviour.execute();

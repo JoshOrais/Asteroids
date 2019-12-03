@@ -21,18 +21,19 @@ public class PlayerBullet extends AsteroidsGameObject{
 
     this.scale = PLAYER_BULLET_SIZE;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), PLAYER_BULLET_SIZE);
-
+    setBounded(false);
     setSprite(new StaticSprite(ResourceLoader.getTexture("bullet")));
   }
 
   public void update(float interval){
-    // System.out.println(velocity.x);
     move(interval);
   }
 
   public void collisionAction(AsteroidsGameObject K){
-    if (K == source)
+    if (K == source){
+      System.out.println("WHY WOULD YOU KILL YOURSEL");
       return;
+    }
     this.kill();
   }
 
