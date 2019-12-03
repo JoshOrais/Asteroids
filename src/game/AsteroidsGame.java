@@ -149,13 +149,11 @@ public class AsteroidsGame extends Game {
 		}
 
 
-		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 100.0f);
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 50.0f);
 		for (AsteroidsGameObject a : d){
 			for (AsteroidsGameObject b : d){
 				if (a != b)
 					a.collideWith(b);
-				if (a instanceof game.asteroids.entities.PlayerBullet)
-					System.out.println("BULLTEr");
 			}
 		}
 
