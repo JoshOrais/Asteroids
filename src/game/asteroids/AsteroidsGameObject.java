@@ -5,6 +5,7 @@ import org.joml.Vector3f;
 
 import engine.GameEntity;
 import game.asteroids.graphics.AnimatedSprite;
+import game.AsteroidsGame;
 
 public abstract class AsteroidsGameObject extends GameEntity {
 	protected Vector2f acceleration = new Vector2f(0.0f, 0.0f),
@@ -21,6 +22,12 @@ public abstract class AsteroidsGameObject extends GameEntity {
 
 	public void setBounded(boolean bounded) {
 		this.bounded = bounded;
+		if (bounded){
+			xmin = AsteroidsGame.GAME_BOUNDS_MIN_X;
+			ymin = AsteroidsGame.GAME_BOUNDS_MIN_Y;
+			xmax = AsteroidsGame.GAME_BOUNDS_MAX_X;
+			ymax = AsteroidsGame.GAME_BOUNDS_MAX_Y;
+		}
 	}
 
 	public Vector2f getAcceleration() {

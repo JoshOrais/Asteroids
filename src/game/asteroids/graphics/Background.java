@@ -9,8 +9,8 @@ public class Background {
 	private int size;
 	private Layer[] layers;
 	private Matrix4f modelMatrix;
-	public static final float PARRALAX_FACTOR = 2.25f;
-	public static final float IDK_WTF_THIS_IS = 170.3f;
+	public static final float PARRALAX_FACTOR = 3.25f;
+	public static final float IDK_WTF_THIS_IS = 120.3f;
 	private Vector2f transform;
 
 	public Background(int numLayers) {

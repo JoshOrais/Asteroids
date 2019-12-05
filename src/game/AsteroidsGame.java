@@ -90,10 +90,12 @@ public class AsteroidsGame extends Game {
 		font.setTexture(ResourceLoader.getTexture("font"));
 		to = new TextObject("DEFAULTstring", font);
 
-		for (int i = 0; i < 255; ++i){
-			Vector3f loc = new Vector3f((float)Math.random() * 100.0f,(float)Math.random() * 100.0f, 0.0f);
-			Vector2f vel = new Vector2f((float)Math.random() * 20.0f,(float)Math.random() * 20.0f);
-			activeEntities.add(new Asteroid(loc, vel, 10.0f));
+		float boundx = player.getPosition().x + GAME_BOUNDS_WIDTH / 4.f;
+		float boundy = player.getPosition().x + GAME_BOUNDS_HEIGHT / 4.f;
+		for (int  i = 0; i < 255; ++i){
+			addEntity(
+				AsteroidFactory.createLargeAsteroidWithinBounds(boundx, boundy, boundx + GAME_BOUNDS_WIDTH / 2.f, boundy + GAME_BOUNDS_HEIGHT / 2.f)
+				);
 		}
 	}
 

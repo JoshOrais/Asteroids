@@ -12,6 +12,7 @@ out vec4 fragOut;
 uniform sampler2D texture_sampler;
 
 void main(){
+
 	
 	fragOut = texture(texture_sampler, texCoords * scale + vec2(offx, offy));
 
