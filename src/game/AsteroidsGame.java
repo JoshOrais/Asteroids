@@ -45,7 +45,7 @@ public class AsteroidsGame extends Game {
 
 	private static AsteroidsGame GAME = null;
 	public static final int   SCREEN_WIDTH = 1280,   SCREEN_HEIGHT = 720;
-	public static final float GAME_WIDTH   = 128.0f, GAME_HEIGHT   = 72.0f;
+	public static final float GAME_WIDTH   = 381.0f, GAME_HEIGHT   = 216.0f;
 	//this maybe should not be static final
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
@@ -78,7 +78,7 @@ public class AsteroidsGame extends Game {
 		activeEntities.add(player);
 
 		projectionMatrix = new Matrix4f();
-		projectionMatrix.identity().ortho(0.0f, 128.0f, 0.0f, 72.0f, -1.0f, 1.0f);
+		projectionMatrix.identity().ortho(0.0f, GAME_WIDTH, 0.0f, GAME_HEIGHT, -1.0f, 1.0f);
 		renderer.setProjectionMatrix(projectionMatrix);
 
 		bg = new Background(3);
@@ -151,7 +151,7 @@ public class AsteroidsGame extends Game {
 		}
 
 
-		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 50.0f);
+		ArrayList<AsteroidsGameObject> d = qt.queryCircle(new Vector2f(player.getPosition().x, player.getPosition().y), 200.0f);
 		for (AsteroidsGameObject a : d){
 			for (AsteroidsGameObject b : d){
 				if (a != b)
@@ -175,9 +175,9 @@ public class AsteroidsGame extends Game {
 
 		renderer.getEntityShader().bind();
 		if (caps)
-			to.setText("defaultSTRING");
+			to.setText("Fuck you Cris");
 		else
-			to.setText("DEFAULTstring");
+			to.setText("Fuck you Josh");
 		if (++num > 60) {
 			num = 0;
 			caps = !caps;

@@ -9,7 +9,7 @@ import org.joml.*;
 
 public class PlayerBullet extends AsteroidsGameObject{
   private AsteroidsGameObject source;
-  public static final float PLAYER_BULLET_SIZE = 0.65f,
+  public static final float PLAYER_BULLET_SIZE = 1.5f,
                             PLAYER_BULLET_MAX_VELOCITY = 5.17f;
 
   public PlayerBullet(AsteroidsGameObject source, Vector3f loc, Vector2f initialVelocity){
@@ -34,6 +34,7 @@ public class PlayerBullet extends AsteroidsGameObject{
       System.out.println("WHY WOULD YOU KILL YOURSEL");
       return;
     }
+    if (K instanceof PlayerBullet) return;
     this.kill();
   }
 

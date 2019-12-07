@@ -7,6 +7,7 @@ import engine.ResourceLoader;
 import engine.graphics.Camera;
 import engine.graphics.Shader;
 import game.asteroids.AsteroidsGameObject;
+import game.AsteroidsGame;
 
 public class Renderer {
 	// should handle setting uniforms and all that shit
@@ -51,7 +52,7 @@ public class Renderer {
 
 	public void renderEntity(GameEntity E, Camera cam) {
 		entityShader.bind();
-		entityShader.setUniformMatrix4f("view", cam.getViewMatrix(128, 72));
+		entityShader.setUniformMatrix4f("view", cam.getViewMatrix(AsteroidsGame.GAME_WIDTH, AsteroidsGame.GAME_HEIGHT));
 		entityShader.setUniformMatrix4f("projection", projectionMatrix);
 		entityShader.setUniformMatrix4f("model", E.getModelMatrix());
 

@@ -3,17 +3,21 @@ package game.asteroids.entities;
 import org.joml.Vector3f;
 import org.joml.Vector2f;
 
+import game.asteroids.DeathBehaviours;
+
 public class AsteroidFactory{
   public static float ASTEROID_SIZE_LARGE = 30.0f,
                       ASTEROID_SIZE_MEDIUM = 12.0f,
                       ASTEROID_SIZE_SMALL = 6.0f,
-                      ASTEROID_SPEED_LARGE = 1.2f,
-                      ASTEROID_SPEED_MEDIUM = 4.0f,
-                      ASTEROID_SPEED_SMALL = 7.8f;
+                      ASTEROID_SPEED_LARGE = 0.5f,
+                      ASTEROID_SPEED_MEDIUM = 2.0f,
+                      ASTEROID_SPEED_SMALL = 5.8f;
 
   public static Asteroid createLargeAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_LARGE);
-    return new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_LARGE);
+    Asteroid a = new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_LARGE);
+    a.setDeathBehaviour(DeathBehaviours.getbigAsteroidDeath());
+    return a;
   }
 
   public static Asteroid createLargeAsteroid(float x, float y, float velocity_x, float velocity_y){
@@ -22,7 +26,8 @@ public class AsteroidFactory{
 
   public static Asteroid createMediumAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_MEDIUM);
-    return new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_MEDIUM);
+    Asteroid a = new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_MEDIUM);
+    return a;
   }
 
   public static Asteroid createMediumAsteroid(float x, float y, float velocity_x, float velocity_y){

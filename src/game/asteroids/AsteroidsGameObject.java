@@ -19,6 +19,7 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
 	protected boolean collided;
 	public boolean alive = true;
+	protected Behavior deathBehaviour = null;
 
 	public void setBounded(boolean bounded) {
 		this.bounded = bounded;
@@ -30,6 +31,10 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		}
 	}
 
+	public void setDeathBehaviour(Behavior a){
+		this.deathBehaviour = a;
+	}
+
 	public Vector2f getAcceleration() {
 		return acceleration;
 	}
@@ -39,6 +44,8 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	}
 
 	public void kill(){
+		if (deathBehaviour != null)
+			deathBehaviour.execute();
 		alive = false;
 	}
 

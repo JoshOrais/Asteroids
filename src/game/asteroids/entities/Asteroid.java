@@ -34,4 +34,15 @@ public class Asteroid extends AsteroidsGameObject{
     if (!(K instanceof Asteroid))
       this.kill();
   }
+
+  @Override
+  public void kill(){
+    if (this.deathBehaviour != null){
+      deathBehaviour.setTarget(velocity);
+      deathBehaviour.setLocation(new Vector2f(position.x, position.y));
+    }
+
+    super.kill();
+  }
+
 }

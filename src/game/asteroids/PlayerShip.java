@@ -15,7 +15,7 @@ public class PlayerShip extends AsteroidsGameObject{
 	private Behavior firingBehaviour;
 
 	public PlayerShip() {
-		scale = 7.0f;
+		scale = 15.0f;
 		angle = 0.0f;
 		direction = 0;
 		this.max_velocity = MAX_VELOCITY;
