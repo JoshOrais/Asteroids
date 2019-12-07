@@ -9,7 +9,7 @@ import org.joml.*;
 
 public class PlayerBullet extends AsteroidsGameObject{
   private AsteroidsGameObject source;
-  public static final float PLAYER_BULLET_SIZE = 1.5f,
+  public static final float PLAYER_BULLET_SIZE = 1.9f,
                             PLAYER_BULLET_MAX_VELOCITY = 5.17f;
 
   public PlayerBullet(AsteroidsGameObject source, Vector3f loc, Vector2f initialVelocity){
@@ -21,12 +21,15 @@ public class PlayerBullet extends AsteroidsGameObject{
 
     this.scale = PLAYER_BULLET_SIZE;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), PLAYER_BULLET_SIZE);
+    addForce(source.getVelocity());
     setBounded(false);
     setSprite(new StaticSprite(ResourceLoader.getTexture("bullet")));
+    setLifeSpan(1.05f);
   }
 
   public void update(float interval){
     move(interval);
+    age(interval);
   }
 
   public void collisionAction(AsteroidsGameObject K){

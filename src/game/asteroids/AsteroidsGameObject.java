@@ -9,16 +9,16 @@ import game.AsteroidsGame;
 
 public abstract class AsteroidsGameObject extends GameEntity {
 	protected Vector2f acceleration = new Vector2f(0.0f, 0.0f),
-				 	   velocity     = new Vector2f(0.0f, 0.0f),
-				 	   deltaPos		= new Vector2f(0.0f, 0.0f);
+				 	   				 velocity     = new Vector2f(0.0f, 0.0f),
+				 	   	 			 deltaPos	  	= new Vector2f(0.0f, 0.0f);
 
 	protected float max_velocity;
 	protected AnimatedSprite sprite;
-	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10;
-	private boolean bounded = true;
+	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10,
+									lifespan = 0.f, age = 0.f;
 	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
 	protected boolean collided;
-	public boolean alive = true;
+	protected boolean alive = true, timedLife = false, bounded = false;
 	protected Behavior deathBehaviour = null;
 
 	public void setBounded(boolean bounded) {
@@ -79,9 +79,34 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		return hitbox;
 	}
 
+	public void setTimedLife(boolean a){
+		this.timedLife = a;
+	}
+
+	public void setLifeSpan(float lifespan){
+		setTimedLife(true);
+		this.lifespan = lifespan;
+	}
+
+	public void age(float interval){
+		if (!timedLife) return;
+
+		age += interval;
+		if (age > lifespan)
+			this.kill();
+	}
+
+	public void setAge(float age){
+		this.age = age;
+	}
+
 	public void setVelocity(Vector2f v){
 		velocity.x = v.x;
 		velocity.y = v.y;
+	}
+
+	public Vector2f getVelocity(){
+		return velocity;
 	}
 
 	public void setHitBoxRadius(float r){

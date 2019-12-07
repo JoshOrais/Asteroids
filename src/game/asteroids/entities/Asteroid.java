@@ -41,8 +41,8 @@ public class Asteroid extends AsteroidsGameObject{
       deathBehaviour.setTarget(velocity);
       deathBehaviour.setLocation(new Vector2f(position.x, position.y));
     }
-
-    super.kill();
+    if (scale > 15.f)
+      super.kill();
   }
 
 }

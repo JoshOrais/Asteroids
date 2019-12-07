@@ -3,16 +3,16 @@ package game.asteroids;
 import org.joml.Vector2f;
 
 import engine.ResourceLoader;
-import engine.graphics.Shader;
 import game.asteroids.graphics.StaticSprite;
 
 public class PlayerShip extends AsteroidsGameObject{
 	private float angle;
 	public static final float MAX_VELOCITY = 4.0f;
 	public static final float ACCELERATION = 3.8f;
-	public static final float HANDLING = 100.0f;
+	public static final float HANDLING = 120.f;
 	private int direction;
 	private Behavior firingBehaviour;
+	private int firecooldown = 0;
 
 	public PlayerShip() {
 		scale = 15.0f;
@@ -20,8 +20,8 @@ public class PlayerShip extends AsteroidsGameObject{
 		direction = 0;
 		this.max_velocity = MAX_VELOCITY;
 		this.hitbox = new HitBox(position, scale);
-		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
-		setFiringBehaviour(FiringBehaviours.getNormalBulletBehaviour());
+		setSprite(new StaticSprite(ResourceLoader.getTexture("default")));
+		setFiringBehaviour(FiringBehaviours.getTripleBulletBehaviour());
 	}
 
 	public void setDirection(int direction) {
@@ -41,6 +41,8 @@ public class PlayerShip extends AsteroidsGameObject{
 	}
 
 	public void fire(){
+		firecooldown = (firecooldown + 1) % 5;
+		if (firecooldown > 0) return;
 		float x = (float)Math.cos(Math.toRadians(angle));
 		float y = (float)Math.sin(Math.toRadians(angle));
 		Vector2f target = new Vector2f(x, y).mul(scale);

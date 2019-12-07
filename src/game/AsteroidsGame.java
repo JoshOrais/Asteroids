@@ -217,7 +217,7 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("planets","../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
 		ResourceLoader.addTexture("bullet","../res/textures/try.png");
-		ResourceLoader.addTexture("default","../res/textures/yay.png");
+		ResourceLoader.addTexture("default","../res/textures/sprite.png");
 	}
 
 	public void dispose(){
