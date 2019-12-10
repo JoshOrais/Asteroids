@@ -21,6 +21,8 @@ import engine.graphics.Camera;
 import engine.graphics.GameFont;
 import engine.graphics.TextObject;
 import game.asteroids.PlayerShip;
+import game.asteroids.Timer;
+import game.asteroids.FiringBehaviours;
 import game.asteroids.entities.*;
 import game.asteroids.AsteroidsGameObject;
 import game.asteroids.QuadTree;
@@ -34,12 +36,13 @@ public class AsteroidsGame extends Game {
 	private Camera cam;
 	private PlayerShip player;
 	private boolean accelerating, firing;
-	private int direction;
+	private int direction, asteroidCount = 0;
 	private Renderer renderer;
 	private Matrix4f projectionMatrix;
 	private Background bg;
 	private GameFont font;
 	private TextObject to;
+	private Timer asteroidSpawnTimer;
 
 	private AsteroidsGame() {};
 
@@ -48,7 +51,8 @@ public class AsteroidsGame extends Game {
 	public static final float GAME_WIDTH   = 381.0f, GAME_HEIGHT   = 216.0f;
 	//this maybe should not be static final
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
-							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f;
+							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f,
+														ASTEROID_SPAWN_INTERVAL = 1.f;
 
 	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
 			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
@@ -90,9 +94,12 @@ public class AsteroidsGame extends Game {
 		font.setTexture(ResourceLoader.getTexture("font"));
 		to = new TextObject("DEFAULTstring", font);
 
+		asteroidSpawnTimer = new Timer(ASTEROID_SPAWN_INTERVAL);
+		asteroidSpawnTimer.setBehaviour(FiringBehaviours.getSpawnAsteroidBehaviour());
+
 		float boundx = player.getPosition().x + GAME_BOUNDS_WIDTH / 4.f;
 		float boundy = player.getPosition().x + GAME_BOUNDS_HEIGHT / 4.f;
-		for (int  i = 0; i < 255; ++i){
+		for (int  i = 0; i < 1024; ++i){
 			addEntity(
 				AsteroidFactory.createLargeAsteroidWithinBounds(boundx, boundy, boundx + GAME_BOUNDS_WIDTH / 2.f, boundy + GAME_BOUNDS_HEIGHT / 2.f)
 				);
@@ -159,6 +166,12 @@ public class AsteroidsGame extends Game {
 			}
 		}
 
+		asteroidSpawnTimer.update(timestep);
+		if (asteroidSpawnTimer.isReady()){
+			asteroidSpawnTimer.fire();
+			System.out.println("SPAWNED ASTEROID, Asteroid Count now " + asteroidCount);
+		}
+
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
 
@@ -201,6 +214,8 @@ public class AsteroidsGame extends Game {
 	}
 
 	public void addEntity(AsteroidsGameObject E){
+		if (E instanceof Asteroid)
+			asteroidCount++;
 		queuedEntities.add(E);
 	}
 

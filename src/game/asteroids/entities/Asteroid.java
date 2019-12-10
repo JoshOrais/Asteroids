@@ -32,7 +32,7 @@ public class Asteroid extends AsteroidsGameObject{
 
   public void collisionAction(AsteroidsGameObject K){
     if (!(K instanceof Asteroid))
-      this.kill();
+      damage(K.getHitDamage());
   }
 
   @Override
@@ -41,8 +41,7 @@ public class Asteroid extends AsteroidsGameObject{
       deathBehaviour.setTarget(velocity);
       deathBehaviour.setLocation(new Vector2f(position.x, position.y));
     }
-    if (scale > 15.f)
-      super.kill();
+    super.kill();
   }
 
 }

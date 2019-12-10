@@ -24,12 +24,20 @@ public class Timer{
     }
   }
 
+  public void setBehaviour(Behavior B){
+    this.action = B;
+  }
+
   public float getAccumulatedTime(){
     return accumulatedTime;
   }
 
   public void setAction(Behavior A){
     this.action = A;
+  }
+
+  public boolean isReady(){
+    return ready;
   }
 
   public void fire(){

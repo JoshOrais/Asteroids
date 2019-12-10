@@ -15,7 +15,8 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	protected float max_velocity;
 	protected AnimatedSprite sprite;
 	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10,
-									lifespan = 0.f, age = 0.f;
+									lifespan = 0.f, age = 0.f,
+									hitpoints = 0.f, hitdamage = 0.f;
 	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
 	protected boolean collided;
 	protected boolean alive = true, timedLife = false, bounded = false;
@@ -69,6 +70,28 @@ public abstract class AsteroidsGameObject extends GameEntity {
 
 		width = Math.abs(xmax - xmin);
 		height = Math.abs(ymax - ymin);
+	}
+
+	public void setHP(float hp){
+		this.hitpoints = hp;
+	}
+
+	public float getHP(){
+		return hitpoints;
+	}
+
+	public void setHitDamage(float hitdamage){
+		this.hitdamage = hitdamage;
+	}
+
+	public float getHitDamage(){
+		return hitdamage;
+	}
+
+	public void damage(float amount){
+		this.hitpoints -= amount;
+		if (hitpoints <= 0)
+			this.kill();
 	}
 
 	public void addForce(Vector2f F) {

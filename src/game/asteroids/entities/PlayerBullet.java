@@ -25,6 +25,7 @@ public class PlayerBullet extends AsteroidsGameObject{
     setBounded(false);
     setSprite(new StaticSprite(ResourceLoader.getTexture("bullet")));
     setLifeSpan(1.05f);
+    setHitDamage(2.f);
   }
 
   public void update(float interval){
@@ -33,10 +34,7 @@ public class PlayerBullet extends AsteroidsGameObject{
   }
 
   public void collisionAction(AsteroidsGameObject K){
-    if (K == source){
-      System.out.println("WHY WOULD YOU KILL YOURSEL");
-      return;
-    }
+    if (K == source) return;
     if (K instanceof PlayerBullet) return;
     this.kill();
   }

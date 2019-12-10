@@ -15,6 +15,10 @@ public class FiringBehaviours{
     return (Behavior)(new tripleBulletBehaviour());
   }
 
+  public static Behavior getSpawnAsteroidBehaviour(){
+    return (Behavior)(new spawnAsteroidBehaviour());
+  }
+
   public static class normalBulletBehaviour extends Behavior{
     public void execute(){
       PlayerBullet pb = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), target);
@@ -24,27 +28,15 @@ public class FiringBehaviours{
 
   public static class tripleBulletBehaviour extends Behavior{
     public void execute(){
-      Matrix2f rot = new Matrix2f().rotate(-0.523599f); // -30.0 degrees in radians
+      Matrix2f rot = new Matrix2f().rotate(-0.223599f); // -30.0 degrees in radians
       Vector2f vel = new Vector2f(target);
       vel.mul(rot);
-      rot.identity().rotate(0.523599f);// -30.0 degrees in radians
+      rot.identity().rotate(0.223599f);// -30.0 degrees in radians
 
       for (int i = 0; i < 3; ++i){
         AsteroidsGame.getGame().addEntity(new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), new Vector2f(vel)));
         vel.mul(rot);
       }
-      // PlayerBullet pa = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), target);
-      // AsteroidsGame.getGame().addEntity(pa);
-      //
-      // vel = new Vector2f(target);
-      // vel.mul(rot.identity().rotate((float)Math.toRadians(-30.f)));
-      // PlayerBullet pb = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), vel);
-      // AsteroidsGame.getGame().addEntity(pb);
-      //
-      // vel = new Vector2f(target);
-      // vel.mul(rot.identity().rotate((float)Math.toRadians(30.f)));
-      // PlayerBullet pc = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), vel);
-      // AsteroidsGame.getGame().addEntity(pc);
     }
   }
 
