@@ -300,6 +300,7 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("smoke_04",  "../res/textures/art_assets/smoke_04.png");
 		ResourceLoader.addTexture("smoke_05",  "../res/textures/art_assets/smoke_05.png");
 		ResourceLoader.addTexture("UFO",       "../res/textures/art_assets/UFO.png");
+		ResourceLoader.addTexture("UFO2",       "../res/textures/art_assets/UFO2.png");
 		ResourceLoader.addTexture("missile",   "../res/textures/art_assets/missile.png");
 	}
 
