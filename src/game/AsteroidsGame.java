@@ -190,9 +190,9 @@ public class AsteroidsGame extends Game {
 			asteroidSpawnTimer.fire();
 		}
 
-		if (HunterMissile.getHunterMissile().isDead()){
-			hunterSpawnTimer.update(timestep);
-		}
+		// if (HunterMissile.getHunterMissile().isDead()){
+		// 	hunterSpawnTimer.update(timestep);
+		// }
 
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
@@ -227,11 +227,11 @@ public class AsteroidsGame extends Game {
 		renderer.renderHud(hud);
 	}
 
-	public void addHunter(){
-		if (!activeEntities.contains(HunterMissile.getHunterMissile()) && !queuedEntities.contains(HunterMissile.getHunterMissile())){
-			queuedEntities.add(HunterMissile.getHunterMissile());
-		}
-	}
+	// public void addHunter(){
+	// 	if (!activeEntities.contains(HunterMissile.getHunterMissile()) && !queuedEntities.contains(HunterMissile.getHunterMissile())){
+	// 		queuedEntities.add(HunterMissile.getHunterMissile());
+	// 	}
+	// }
 
 	public void moveCamera() {
 		Vector2f m = new Vector2f(player.getPosition().x, player.getPosition().y);
