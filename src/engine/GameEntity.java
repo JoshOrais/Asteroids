@@ -52,7 +52,7 @@ public abstract class GameEntity {
 
 	public Matrix4f getModelMatrix() {
 		modelMatrix.identity();
-		modelMatrix.translate(position).rotateZ((float)Math.toRadians(rotation)).scale(scale);
+		modelMatrix.translate(position).rotateZ((float)Math.toRadians(rotation)).scale(scale * 2);
 		return modelMatrix;
 	}
 

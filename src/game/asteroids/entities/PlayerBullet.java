@@ -2,6 +2,7 @@ package game.asteroids.entities;
 
 import game.asteroids.AsteroidsGameObject;
 import game.asteroids.HitBox;
+import game.asteroids.DeathBehaviours;
 import game.asteroids.graphics.StaticSprite;
 import engine.ResourceLoader;
 
@@ -26,6 +27,7 @@ public class PlayerBullet extends AsteroidsGameObject{
     setSprite(new StaticSprite(ResourceLoader.getTexture("bullet")));
     setLifeSpan(1.05f);
     setHitDamage(2.f);
+    setDeathBehaviour(DeathBehaviours.getPowerUpSplash());
   }
 
   public void update(float interval){

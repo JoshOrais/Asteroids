@@ -6,7 +6,9 @@ import game.asteroids.AsteroidsGameObject;
 import game.asteroids.graphics.*;
 import game.asteroids.PlayerShip;
 import game.asteroids.HitBox;
+import game.asteroids.DeathBehaviours;
 import engine.ResourceLoader;
+
 public class HealingPowerUp extends AsteroidsGameObject{
   public static final float MAX_VELOCITY = 0.2f,
                             SIZE = 15.f;
@@ -19,6 +21,7 @@ public class HealingPowerUp extends AsteroidsGameObject{
     this.hitbox = new HitBox(this.position, scale);
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
     setSprite(new StaticSprite(ResourceLoader.getTexture("anime")));
+    setDeathBehaviour(DeathBehaviours.getPowerUpSplash());
   }
 
   public void collisionAction(AsteroidsGameObject K){

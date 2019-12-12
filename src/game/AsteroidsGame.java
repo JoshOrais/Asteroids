@@ -161,7 +161,7 @@ public class AsteroidsGame extends Game {
 				continue;
 			}
 			E.update(timestep);
-			if (!(E instanceof SmokePuff))
+			if (!(E instanceof Particle))
 				qt.insert(E);
 		}
 
