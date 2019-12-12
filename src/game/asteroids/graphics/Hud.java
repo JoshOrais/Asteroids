@@ -12,7 +12,9 @@ public class Hud {
     private Matrix4f projectionMatrix, viewMatrix;
     private GameFont font;
     private ArrayList<HudItem> items;
-    private HudItem hpText, livesText;
+    private HudItem hpText, livesText, invulsplat;
+    private boolean doInvulsplat = false;
+    private boolean oneFrameDelay = false;
 
     public Hud(GameFont font, float width, float height){
       this.projectionMatrix = new Matrix4f().identity().ortho(0.f, width, 0.f, height, 0.f, 1.f);
@@ -33,6 +35,9 @@ public class Hud {
       livesText.setText("Lives : 3");
       livesText.setTexture(ResourceLoader.getTexture("anime"));
       items.add(livesText);
+
+      invulsplat = new HudItem(0, 0, hudWidth, hudHeight);
+      invulsplat.setTexture(ResourceLoader.getTexture("invulsplat"));
     }
 
     public void setHP(float amount){
@@ -60,6 +65,18 @@ public class Hud {
           i.getText().getMesh().render(s);
         }
       }
+
+      if (oneFrameDelay){
+        s.setUniformMatrix4f("model", invulsplat.getModelMatrix());
+        invulsplat.getTexture().bind();
+        ResourceLoader.getTranslatedQuadMesh().render(s);
+      }
+
+      oneFrameDelay = doInvulsplat;
+    }
+
+    public void setInvulSplat(boolean a){
+      this.doInvulsplat = a;
     }
 
     public class HudItem{

@@ -19,6 +19,11 @@ public class FiringBehaviours{
     return (Behavior)(new spawnAsteroidBehaviour());
   }
 
+  public static Behavior getPuffSpawner(){
+    return (Behavior)(new smokePuffSpawner());
+  }
+
+
   public static class normalBulletBehaviour extends Behavior{
     public void execute(){
       PlayerBullet pb = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), target);
@@ -48,6 +53,20 @@ public class FiringBehaviours{
                                                         AsteroidsGame.GAME_BOUNDS_MAX_X,
                                                         AsteroidsGame.GAME_BOUNDS_MAX_Y)
       );
+    }
+  }
+
+  public static class smokePuffSpawner extends Behavior{
+    public void execute(){
+      float r = (float)Math.random() * 2.f;
+      Matrix2f rot = new Matrix2f().rotate(r);
+      Vector2f vel = new Vector2f(target);
+      vel.mul(rot);
+
+      for (int i = 0; i < 3; ++i){
+        AsteroidsGame.getGame().addEntity(new SmokePuff(new Vector3f(location, 0.0f), vel));
+        vel.mul(rot);
+      }
     }
   }
 }

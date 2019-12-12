@@ -23,6 +23,7 @@ import engine.graphics.TextObject;
 import game.asteroids.PlayerShip;
 import game.asteroids.Timer;
 import game.asteroids.FiringBehaviours;
+import game.asteroids.Behavior;
 import game.asteroids.entities.*;
 import game.asteroids.AsteroidsGameObject;
 import game.asteroids.QuadTree;
@@ -30,6 +31,7 @@ import game.asteroids.graphics.Background;
 import game.asteroids.graphics.Renderer;
 import game.asteroids.graphics.Hud;
 import game.asteroids.PointsCalculator;
+
 
 public class AsteroidsGame extends Game {
 	// so much shit
@@ -46,6 +48,8 @@ public class AsteroidsGame extends Game {
 	private Hud hud;
 	private TextObject to;
 	private Timer asteroidSpawnTimer;
+	private Behavior puffSpawner;
+
 
 	private AsteroidsGame() {};
 
@@ -84,6 +88,8 @@ public class AsteroidsGame extends Game {
 		player.setBounded(true);
 		player.setBounds(GAME_BOUNDS_MIN_X, GAME_BOUNDS_MIN_Y, GAME_BOUNDS_MAX_X, GAME_BOUNDS_MAX_Y);
 		activeEntities.add(player);
+
+		puffSpawner = FiringBehaviours.getPuffSpawner();
 
 		projectionMatrix = new Matrix4f();
 		projectionMatrix.identity().ortho(0.0f, GAME_WIDTH, 0.0f, GAME_HEIGHT, -1.0f, 1.0f);
@@ -138,6 +144,9 @@ public class AsteroidsGame extends Game {
 	public void update(float timestep) {
 
 		bg.move(player.getDeltaPosition(), timestep);
+
+		// puffSpawner.setTarget(new Vector2f(player.getDeltaPosition().x, player.getDeltaPosition().y));
+		// puffSpawner.setLocation(new Vector2f(player.getPosition().x, player.getPosition().y));
 		moveCamera();
 
 		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
@@ -163,6 +172,7 @@ public class AsteroidsGame extends Game {
 		player.setDirection(direction);
 		if (accelerating) {
 			player.accelerate(timestep);
+			// puffSpawner.execute();
 		}
 
 
@@ -196,6 +206,7 @@ public class AsteroidsGame extends Game {
 		}
 
 		hud.setHP(player.getHP());
+		hud.setInvulSplat(player.isInvulnerable());
 	}
 
 	@Override
@@ -245,6 +256,11 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("bullet","../res/textures/try.png");
 		ResourceLoader.addTexture("default","../res/textures/sprite.png");
 		ResourceLoader.addTexture("anime","../res/textures/yay.png");
+		ResourceLoader.addTexture("invulsplat","../res/textures/Forcefield.png");
+		ResourceLoader.addTexture("puff_1","../res/textures/puff_1.png");
+		ResourceLoader.addTexture("puff_2","../res/textures/puff_2.png");
+		ResourceLoader.addTexture("puff_3","../res/textures/puff_3.png");
+		ResourceLoader.addTexture("puff_4","../res/textures/puff_4.png");
 	}
 
 	public void dispose(){
