@@ -27,19 +27,20 @@ public class HunterMissile extends AsteroidsGameObject{
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
     setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
     setTimedLife(true);
-    setLifeSpan(60.f);
+    setLifeSpan(10.f);
     alive = false;
   }
 
   public void collisionAction(AsteroidsGameObject K){
     if (K instanceof PlayerShip || K instanceof Asteroid){
-      // K.damage(100.f);
-      // kill();
+      K.damage(95.f);
+      kill();
     }
   }
 
   public void spawn(Vector2f location, Vector2f initialVelocity){
     this.position = new Vector3f(location, 0.f);
+    setAge(0.f);
 
     this.velocity = initialVelocity.normalize().mul(MAX_VELOCITY);
     double acos = Math.acos(velocity.x / velocity.length());
@@ -52,8 +53,6 @@ public class HunterMissile extends AsteroidsGameObject{
   public void update(float interval){
     age(interval);
     // move(interval);
-    System.out.println("I AM ALIVE, MY position IS "+ position.x + ", " + position.y);
-    System.out.println("PLAYER position is "+ AsteroidsGame.getGame().getPlayer().getPosition().x + ", " + AsteroidsGame.getGame().getPlayer().getPosition().y);
     Vector3f player_pos3 = AsteroidsGame.getGame().getPlayer().getPosition();
     Vector2f player_vel2 = AsteroidsGame.getGame().getPlayer().getVelocity();
 

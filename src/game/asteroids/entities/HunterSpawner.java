@@ -18,18 +18,18 @@ public class HunterSpawner extends Particle{
     this.scale = 30.2f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
-    AnimatedSprite asprite = new AnimatedSprite(2, 5.f);
+    AnimatedSprite asprite = new AnimatedSprite(2, 2.1f);
     asprite.addFrame(ResourceLoader.getTexture("UFO"));
     asprite.addFrame(ResourceLoader.getTexture("UFO"));
     setSprite(asprite);
-    setLifeSpan(5.f);
+    setLifeSpan(1.7f);
     setDeathBehaviour(DeathBehaviours.getSpawnHunter());
   }
 
   public void update(float interval){
     age(interval);
-    if (scale < 15.f) growth_direction = 1;
-    this.scale += 15.5 * interval * growth_direction;
+    if (scale < 10.f) growth_direction = 1;
+    this.scale += 10.f * interval * growth_direction;
     getSprite().update(interval);
   }
 
