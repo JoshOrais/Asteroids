@@ -25,7 +25,7 @@ public class PlayerShip extends AsteroidsGameObject{
 		this.max_velocity = MAX_VELOCITY;
 		this.hitbox = new HitBox(position, scale);
 		this.hitpoints = MAX_HP;
-		setSprite(new StaticSprite(ResourceLoader.getTexture("default")));
+		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
 		singleBullet = FiringBehaviours.getNormalBulletBehaviour();
 		tripleBullet = FiringBehaviours.getTripleBulletBehaviour();
 		setFiringBehaviour(singleBullet);
