@@ -26,7 +26,7 @@ public class SmokePuff extends Particle{
     asprite.addFrame(ResourceLoader.getTexture("smoke_04"));
     asprite.addFrame(ResourceLoader.getTexture("smoke_05"));
     setSprite(asprite);
-    setLifeSpan(0.17f);
+    setLifeSpan(0.12f);
   }
 
   public void update(float interval){
