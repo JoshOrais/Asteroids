@@ -10,7 +10,7 @@ import org.joml.*;
 
 public class PlayerBullet extends AsteroidsGameObject{
   private AsteroidsGameObject source;
-  public static final float PLAYER_BULLET_SIZE = 1.9f,
+  public static final float PLAYER_BULLET_SIZE = 5f,
                             PLAYER_BULLET_MAX_VELOCITY = 5.17f;
 
   public PlayerBullet(AsteroidsGameObject source, Vector3f loc, Vector2f initialVelocity){

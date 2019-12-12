@@ -12,7 +12,7 @@ public class SplashParticle extends Particle{
   public SplashParticle(Vector3f loc, float lifespan){
     this.position = loc;
 
-    this.scale = 1.2f;
+    this.scale = 5f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
     AnimatedSprite asprite = new AnimatedSprite(4, lifespan);
