@@ -38,6 +38,10 @@ public class Hud {
 
       invulsplat = new HudItem(0, 0, hudWidth, hudHeight);
       invulsplat.setTexture(ResourceLoader.getTexture("invulsplat"));
+      
+      HudItem hud = new HudItem(0, 0, hudWidth, hudHeight);
+      hud.setTexture(ResourceLoader.getTexture("hud"));
+      items.add(hud);
     }
 
     public void setHP(float amount){
