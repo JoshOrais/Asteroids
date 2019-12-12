@@ -28,6 +28,8 @@ import game.asteroids.AsteroidsGameObject;
 import game.asteroids.QuadTree;
 import game.asteroids.graphics.Background;
 import game.asteroids.graphics.Renderer;
+import game.asteroids.graphics.Hud;
+import game.asteroids.PointsCalculator;
 
 public class AsteroidsGame extends Game {
 	// so much shit
@@ -41,6 +43,7 @@ public class AsteroidsGame extends Game {
 	private Matrix4f projectionMatrix;
 	private Background bg;
 	private GameFont font;
+	private Hud hud;
 	private TextObject to;
 	private Timer asteroidSpawnTimer;
 
@@ -68,6 +71,7 @@ public class AsteroidsGame extends Game {
 		renderer = new Renderer();
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
 		renderer.setBackgroundShader(ResourceLoader.getShader("background"));
+		renderer.setHudShader(ResourceLoader.getShader("hud"));
 
 		activeEntities = new ArrayList<AsteroidsGameObject>();
 		deadEntities = new ArrayList<AsteroidsGameObject>();
@@ -85,13 +89,16 @@ public class AsteroidsGame extends Game {
 		projectionMatrix.identity().ortho(0.0f, GAME_WIDTH, 0.0f, GAME_HEIGHT, -1.0f, 1.0f);
 		renderer.setProjectionMatrix(projectionMatrix);
 
+		font = ResourceLoader.buildFont("../res/shaders/font.font");
+		font.setTexture(ResourceLoader.getTexture("font"));
+
+		hud = new Hud(font, SCREEN_WIDTH, SCREEN_HEIGHT);
+
 		bg = new Background(3);
 		bg.addLayer(ResourceLoader.getTexture("nebula"));
 		bg.addLayer(ResourceLoader.getTexture("planets"));
 		bg.addLayer(ResourceLoader.getTexture("stars"));
 
-		font = ResourceLoader.buildFont("../res/shaders/font.font");
-		font.setTexture(ResourceLoader.getTexture("font"));
 		to = new TextObject("DEFAULTstring", font);
 
 		asteroidSpawnTimer = new Timer(ASTEROID_SPAWN_INTERVAL);
@@ -169,8 +176,9 @@ public class AsteroidsGame extends Game {
 		asteroidSpawnTimer.update(timestep);
 		if (asteroidSpawnTimer.isReady()){
 			asteroidSpawnTimer.fire();
-			System.out.println("SPAWNED ASTEROID, Asteroid Count now " + asteroidCount);
 		}
+
+		int a = PointsCalculator.calculateMove(new Vector2f(1.f), 1.f, new Vector2f(1.f), 1.f, new Vector2f(0.f), new Vector2f(1.f), 4);
 
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
@@ -187,19 +195,8 @@ public class AsteroidsGame extends Game {
 		}
 
 		renderer.getEntityShader().bind();
-		if (caps)
-			to.setText("Fuck you Cris");
-		else
-			to.setText("Fuck you Josh");
-		if (++num > 60) {
-			num = 0;
-			caps = !caps;
-		}
 
-		font.getTexture().bind();
-		Matrix4f model = new Matrix4f().identity().translate(15.0f, 15.0f, 0.0f).scale(1.0f);
-		renderer.getEntityShader().setUniformMatrix4f("model", model);
-		to.getMesh().render(renderer.getEntityShader());
+		renderer.renderHud(hud);
 	}
 
 
@@ -222,17 +219,18 @@ public class AsteroidsGame extends Game {
 	public void loadShaders() throws Exception{
 		ResourceLoader.addShader("background", "../res/shaders/foreground.vs", "../res/shaders/background.fs");
 		ResourceLoader.addShader("entity", "../res/shaders/foreground.vs", "../res/shaders/foreground.fs");
+		ResourceLoader.addShader("hud", "../res/shaders/foreground.vs", "../res/shaders/foreground.fs");
 	}
 
 	public void loadTextures() throws Exception{
 		ResourceLoader.addTexture("rocket","../res/textures/player.png");
-		// ResourceLoader.addTexture("asteroid","../res/textures/asteroid.png");
 		ResourceLoader.addTexture("font","../res/textures/font.png");
 		ResourceLoader.addTexture("stars","../res/textures/stars.png");
 		ResourceLoader.addTexture("planets","../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
 		ResourceLoader.addTexture("bullet","../res/textures/try.png");
 		ResourceLoader.addTexture("default","../res/textures/sprite.png");
+		ResourceLoader.addTexture("anime","../res/textures/yay.png");
 	}
 
 	public void dispose(){

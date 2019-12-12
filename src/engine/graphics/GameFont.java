@@ -55,13 +55,14 @@ public class GameFont {
 				System.out.println("glyphs not contain \'" + c +"\'");
 			float charwidth = glyphs.get(c).getWidth();
 			float charX = glyphs.get(c).getStartX();
-			// X                              // Y                  // Z
-			vertices.add(startx);             vertices.add(height); vertices.add(0.0f); // top    left
-			vertices.add(startx + charwidth); vertices.add(height); vertices.add(0.0f); // top    right
-			vertices.add(startx);             vertices.add(0.0f);   vertices.add(0.0f); // bottom left
-			vertices.add(startx);             vertices.add(0.0f);   vertices.add(0.0f); // bottom left
-			vertices.add(startx + charwidth); vertices.add(height); vertices.add(0.0f); // top    right
-			vertices.add(startx + charwidth); vertices.add(0.0f);   vertices.add(0.0f); // bottom right
+			float scaledWidth = charwidth / height;
+										// X                              // Y              					    // Z
+			vertices.add(startx);      				  vertices.add(1.0f); vertices.add(0.0f); // top    left
+			vertices.add(startx + scaledWidth); vertices.add(1.0f); vertices.add(0.0f); // top    right
+			vertices.add(startx);            		vertices.add(0.0f); vertices.add(0.0f); // bottom left
+			vertices.add(startx);            		vertices.add(0.0f); vertices.add(0.0f); // bottom left
+			vertices.add(startx + scaledWidth); vertices.add(1.0f); vertices.add(0.0f); // top    right
+			vertices.add(startx + scaledWidth); vertices.add(0.0f); vertices.add(0.0f); // bottom right
 
 			float sx = charX / width;
 			float ex = (charX + charwidth) / width;
@@ -72,7 +73,7 @@ public class GameFont {
 			texcoords.add(ex); texcoords.add(1.0f); //top    right
 			texcoords.add(ex); texcoords.add(0.0f); //bottom right
 
-			startx += charwidth;
+			startx += scaledWidth;
 		}
 
 		float[] v = new float[vertices.size()];

@@ -8,7 +8,8 @@ out vec4 fragOut;
 uniform sampler2D texture_sampler;
 
 void main(){
-	
+
 	fragOut = texture(texture_sampler, texCoords);
+	//fragOut = vec4(texCoords, 1.f, 1.f);
 
 }

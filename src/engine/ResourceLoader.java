@@ -106,9 +106,9 @@ public class ResourceLoader {
 		if (quadMesh == null) {
 			float[] vertices = {
 					0.5f,  0.5f,  0.0f,
-				   -0.5f,  0.5f,  0.0f,
-				   -0.5f, -0.5f,  0.0f,
-				   -0.5f, -0.5f,  0.0f,
+				 -0.5f,  0.5f,  0.0f,
+				 -0.5f, -0.5f,  0.0f,
+			   -0.5f, -0.5f,  0.0f,
 					0.5f, -0.5f,  0.0f,
 					0.5f,  0.5f,  0.0f,
 			};
@@ -126,6 +126,34 @@ public class ResourceLoader {
 		}
 
 		return quadMesh;
+	}
+
+	public static Mesh translatedQuadMesh = null;
+
+	public static Mesh getTranslatedQuadMesh() {
+		if (translatedQuadMesh == null) {
+			float[] vertices = {
+					1.0f,  1.0f,  0.0f,
+				  0.0f,  1.0f,  0.0f,
+				  0.0f,  0.0f,  0.0f,
+			    0.0f,  0.0f,  0.0f,
+					1.0f,  0.0f,  0.0f,
+					1.0f,  1.0f,  0.0f,
+			};
+
+			float[] texcoords = {
+					1.0f,  1.0f,
+					0.0f,  1.0f,
+					0.0f,  0.0f,
+					0.0f,  0.0f,
+					1.0f,  0.0f,
+					1.0f,  1.0f,
+			};
+
+			translatedQuadMesh = new Mesh(vertices, texcoords);
+		}
+
+		return translatedQuadMesh;
 	}
 
 	public static GameFont buildFont(String file) throws Exception{

@@ -64,12 +64,8 @@ public class Renderer {
 		ResourceLoader.getQuadMesh().render(entityShader);
 	}
 
-	public void renderHud(Shader s) {
-		// TODO should have a parameter hud
-		// hud class has hud objects inside
-		// hud should be done soon
-		// stop procrastinating
-		// you cunt
+	public void renderHud(Hud h) {
+		h.render(hudShader);
 	}
 
 	public void renderBackground(Background bg) {
