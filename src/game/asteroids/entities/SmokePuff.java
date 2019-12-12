@@ -20,12 +20,16 @@ public class SmokePuff extends Particle{
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
     AnimatedSprite asprite = new AnimatedSprite(4, 0.12f);
-    asprite.addFrame(ResourceLoader.getTexture("puff_1"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_2"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_3"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_4"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_01"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_02"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_03"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_04"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_05"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_06"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_07"));
+    asprite.addFrame(ResourceLoader.getTexture("smoke_08"));
     setSprite(asprite);
-    setLifeSpan(0.13f);
+    setLifeSpan(0.3f);
   }
 
   public void update(float interval){

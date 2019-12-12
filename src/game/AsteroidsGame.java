@@ -272,6 +272,14 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("puff_2",    "../res/textures/puff_2.png");
 		ResourceLoader.addTexture("puff_3",    "../res/textures/puff_3.png");
 		ResourceLoader.addTexture("puff_4",    "../res/textures/puff_4.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
 		
 	}
 
