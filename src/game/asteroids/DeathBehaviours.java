@@ -83,5 +83,5 @@ public class DeathBehaviours{
       HunterMissile.getHunterMissile().spawn(location, hunter_vel);
       System.out.println("SPAWNED HUNTER");
     }
-  }*/
+  }
 }
