@@ -1,4 +1,4 @@
-package game.asteroids.entities;
+/*package game.asteroids.entities;
 
 import game.asteroids.AsteroidsGameObject;
 import game.asteroids.HitBox;
@@ -30,3 +30,4 @@ public class SplashParticle extends Particle{
 
 
 }
+*/
