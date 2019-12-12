@@ -24,7 +24,7 @@ public class FiringBehaviours{
   }
 
   public static Behavior getHunterSpawnBehaviour(){
-    return null;
+    return new spawnHunterSpawner();
   }
 
 
@@ -70,9 +70,14 @@ public class FiringBehaviours{
     }
   }
 
-  public static class spawnHunterSpawner{
+  public static class spawnHunterSpawner extends Behavior{
     public void execute(){
-
+      Vector2f offset = new Vector2f(0.f, 60.f);
+      float offset_rot = (float)Math.random() * 4.f;
+      Matrix2f rot = new Matrix2f().identity().rotate(offset_rot);
+      offset.mul(rot);
+      location.add(offset);
+      AsteroidsGame.getGame().addEntity(new HunterSpawner(new Vector3f(location, 0.f)));
     }
   }
 }

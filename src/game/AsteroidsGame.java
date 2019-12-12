@@ -59,7 +59,7 @@ public class AsteroidsGame extends Game {
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f,
 														ASTEROID_SPAWN_INTERVAL = 15.f,
-														HUNTER_SPAWN_INTERVAL = 30.f;
+														HUNTER_SPAWN_INTERVAL = 10.f;
 
 	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
 			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
@@ -118,6 +118,10 @@ public class AsteroidsGame extends Game {
 				AsteroidFactory.createLargeAsteroidWithinBounds(boundx, boundy, boundx + GAME_BOUNDS_WIDTH / 2.f, boundy + GAME_BOUNDS_HEIGHT / 2.f)
 				);
 		}
+
+		Vector2f a = new Vector2f(0.f, 0.f);
+		Vector2f b = new Vector2f();
+		a.add(new Vector2f(0.f, 1.f), b);
 	}
 
 	@Override
@@ -190,9 +194,13 @@ public class AsteroidsGame extends Game {
 			asteroidSpawnTimer.fire();
 		}
 
-		// if (HunterMissile.getHunterMissile().isDead()){
-		// 	hunterSpawnTimer.update(timestep);
-		// }
+		if (HunterMissile.getHunterMissile().isDead()){
+			hunterSpawnTimer.update(timestep);
+			if (hunterSpawnTimer.isReady()){
+				hunterSpawnTimer.getBehaviour().setLocation(player.getPosition().x,player.getPosition().y);
+				hunterSpawnTimer.fire();
+			}
+		}
 
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
@@ -219,6 +227,7 @@ public class AsteroidsGame extends Game {
 
 		for (GameEntity entity : activeEntities) {
 			renderer.renderEntity(entity, cam);
+			if (entity instanceof HunterMissile) System.out.println("I SHOULD BE DRAWN BITCH");
 		}
 		//draw player in front of everything
 		renderer.renderEntity(player, cam);
@@ -273,13 +282,13 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("puff_3",    "../res/textures/puff_3.png");
 		ResourceLoader.addTexture("puff_4",    "../res/textures/puff_4.png");
 		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
-		ResourceLoader.addTexture("smoke_01",  "../res/textures/art_assets/smoke_01.png");
+		ResourceLoader.addTexture("smoke_02",  "../res/textures/art_assets/smoke_02.png");
+		ResourceLoader.addTexture("smoke_03",  "../res/textures/art_assets/smoke_03.png");
+		ResourceLoader.addTexture("smoke_04",  "../res/textures/art_assets/smoke_04.png");
+		ResourceLoader.addTexture("smoke_05",  "../res/textures/art_assets/smoke_05.png");
+		ResourceLoader.addTexture("smoke_06",  "../res/textures/art_assets/smoke_06.png");
+		ResourceLoader.addTexture("smoke_07",  "../res/textures/art_assets/smoke_07.png");
+		ResourceLoader.addTexture("smoke_08",  "../res/textures/art_assets/smoke_08.png");
 		
 	}
 
