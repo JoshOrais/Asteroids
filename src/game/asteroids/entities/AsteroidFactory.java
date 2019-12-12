@@ -6,8 +6,8 @@ import org.joml.Vector2f;
 import game.asteroids.DeathBehaviours;
 
 public class AsteroidFactory{
-  public static float ASTEROID_SIZE_LARGE = 42.0f,
-                      ASTEROID_SIZE_MEDIUM = 28.0f,
+  public static float ASTEROID_SIZE_LARGE = 32.0f,
+                      ASTEROID_SIZE_MEDIUM = 23.0f,
                       ASTEROID_SIZE_SMALL = 15.0f,
                       ASTEROID_SPEED_LARGE = 0.5f,
                       ASTEROID_SPEED_MEDIUM = 2.0f,
