@@ -261,7 +261,7 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("planets",   "../res/textures/planets.png");
 		ResourceLoader.addTexture("nebula",    "../res/textures/nebula.png");
 		ResourceLoader.addTexture("bullet",    "../res/textures/try.png");
-		ResourceLoader.addTexture("asteroid",  "../res/textures/art_assets/asteroid	.png");
+		ResourceLoader.addTexture("asteroid",  "../res/textures/art_assets/asteroid.png");
 		ResourceLoader.addTexture("anime",     "../res/textures/yay.png");
 		ResourceLoader.addTexture("invulsplat","../res/textures/art_assets/HUD.png");
 		ResourceLoader.addTexture("puff_1",    "../res/textures/puff_1.png");
