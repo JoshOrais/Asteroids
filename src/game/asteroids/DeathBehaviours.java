@@ -24,6 +24,10 @@ public class DeathBehaviours{
     return new powerUpSplash();
   }
 
+  public static Behavior getSpawnHunter(){
+    return new spawnHunter();
+  }
+
   public static class bigAsteroidDeath extends Behavior{
     public void execute(){
       Vector2f vel = new Vector2f((float)Math.random() * 300.f, (float)Math.random() * 300.f);
@@ -64,14 +68,15 @@ public class DeathBehaviours{
     }
   }
 
-  public static class spawnHunter{
+  public static class spawnHunter extends Behavior{
     public void execute(){
-      Vector3f player_loc3 = Asteroids.getGame().getPlayer().getPosition();
+      Vector3f player_loc3 = AsteroidsGame.getGame().getPlayer().getPosition();
       Vector2f hunter_vel = new Vector2f(player_loc3.x, player_loc3.y);
       Vector2f hunter_loc = new Vector2f(location);
       hunter_vel.sub(hunter_loc);
 
       HunterMissile.getHunterMissile().spawn(location, hunter_vel);
+      System.out.println("SPAWNED HUNTER");
     }
   }
 }

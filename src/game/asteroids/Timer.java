@@ -28,6 +28,10 @@ public class Timer{
     this.action = B;
   }
 
+  public Behavior getBehaviour(){
+    return this.action;
+  }
+
   public float getAccumulatedTime(){
     return accumulatedTime;
   }
