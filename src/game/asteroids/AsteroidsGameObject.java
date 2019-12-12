@@ -45,8 +45,10 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	}
 
 	public void kill(){
-		if (deathBehaviour != null)
+		if (deathBehaviour != null){
+			deathBehaviour.setLocation(new Vector2f(position.x, position.y));
 			deathBehaviour.execute();
+		}
 		alive = false;
 	}
 

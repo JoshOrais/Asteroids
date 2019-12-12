@@ -7,34 +7,32 @@ import engine.ResourceLoader;
 
 import org.joml.*;
 
-public class SmokePuff extends Particle{
-  public static final float SMOKEPUFFSPEED = 0.02f;
+public class SplashParticle extends Particle{
 
-  public SmokePuff(Vector3f loc, Vector2f initialVelocity){
-    this.velocity= initialVelocity;
-    this.velocity.normalize().mul(SMOKEPUFFSPEED);
-    this.max_velocity = SMOKEPUFFSPEED;
+  public SplashParticle(Vector3f loc, float lifespan){
     this.position = loc;
 
-    this.scale = 5.2f;
+    this.scale = 3.2f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
-    AnimatedSprite asprite = new AnimatedSprite(4, 0.12f);
+    AnimatedSprite asprite = new AnimatedSprite(4, lifespan);
     asprite.addFrame(ResourceLoader.getTexture("puff_1"));
     asprite.addFrame(ResourceLoader.getTexture("puff_2"));
     asprite.addFrame(ResourceLoader.getTexture("puff_3"));
     asprite.addFrame(ResourceLoader.getTexture("puff_4"));
     setSprite(asprite);
-    setLifeSpan(0.13f);
+    setLifeSpan(lifespan);
   }
 
   public void update(float interval){
-    move(interval);
+    System.out.println("WTF");
     age(interval);
+    this.scale += 5.5 * interval;
     getSprite().update(interval);
   }
 
   public void collisionAction(AsteroidsGameObject K){
   }
+
 
 }
