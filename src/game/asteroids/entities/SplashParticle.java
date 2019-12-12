@@ -16,10 +16,16 @@ public class SplashParticle extends Particle{
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
     AnimatedSprite asprite = new AnimatedSprite(4, lifespan);
-    asprite.addFrame(ResourceLoader.getTexture("puff_1"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_2"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_3"));
-    asprite.addFrame(ResourceLoader.getTexture("puff_4"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_01"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_02"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_03"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_04"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_05"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_06"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_07"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_08"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_09"));
+    asprite.addFrame(ResourceLoader.getTexture("boom_10"));
     setSprite(asprite);
     setLifeSpan(lifespan);
   }

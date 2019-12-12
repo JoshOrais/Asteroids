@@ -272,6 +272,17 @@ public class AsteroidsGame extends Game {
 		ResourceLoader.addTexture("puff_2",    "../res/textures/puff_2.png");
 		ResourceLoader.addTexture("puff_3",    "../res/textures/puff_3.png");
 		ResourceLoader.addTexture("puff_4",    "../res/textures/puff_4.png");
+		ResourceLoader.addTexture("boom_01",   "../res/textures/art_assets/boom_01.png");
+		ResourceLoader.addTexture("boom_02",   "../res/textures/art_assets/boom_02.png");
+		ResourceLoader.addTexture("boom_03",   "../res/textures/art_assets/boom_03.png");
+		ResourceLoader.addTexture("boom_04",   "../res/textures/art_assets/boom_04.png");
+		ResourceLoader.addTexture("boom_05",   "../res/textures/art_assets/boom_05.png");
+		ResourceLoader.addTexture("boom_06",   "../res/textures/art_assets/boom_06.png");
+		ResourceLoader.addTexture("boom_07",   "../res/textures/art_assets/boom_07.png");
+		ResourceLoader.addTexture("boom_08",   "../res/textures/art_assets/boom_08.png");
+		ResourceLoader.addTexture("boom_09",   "../res/textures/art_assets/boom_09.png");
+		ResourceLoader.addTexture("boom_10",   "../res/textures/art_assets/boom_10.png");
+		
 	}
 
 	public void dispose(){
