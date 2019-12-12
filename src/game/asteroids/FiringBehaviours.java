@@ -23,6 +23,10 @@ public class FiringBehaviours{
     return (Behavior)(new smokePuffSpawner());
   }
 
+  public static Behavior getHunterSpawnBehaviour(){
+    return null;
+  }
+
 
   public static class normalBulletBehaviour extends Behavior{
     public void execute(){
@@ -58,14 +62,10 @@ public class FiringBehaviours{
 
   public static class smokePuffSpawner extends Behavior{
     public void execute(){
-      float r = (float)Math.random() * 2.f;
-      Matrix2f rot = new Matrix2f().rotate(r);
-      Vector2f vel = new Vector2f(target);
-      vel.mul(rot);
-
       for (int i = 0; i < 3; ++i){
-        AsteroidsGame.getGame().addEntity(new SmokePuff(new Vector3f(location, 0.0f), vel));
-        vel.mul(rot);
+        float rand = (float)Math.random();
+        Vector2f vel = new Vector2f(target.x, target.y);
+        AsteroidsGame.getGame().addEntity(new SmokePuff(new Vector3f(location.x + rand, location.y - rand, 0.0f), new Vector2f(vel.x, vel.y)));
       }
     }
   }

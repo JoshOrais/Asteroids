@@ -47,9 +47,8 @@ public class AsteroidsGame extends Game {
 	private GameFont font;
 	private Hud hud;
 	private TextObject to;
-	private Timer asteroidSpawnTimer;
+	private Timer asteroidSpawnTimer, hunterSpawnTimer;
 	private Behavior puffSpawner;
-
 
 	private AsteroidsGame() {};
 
@@ -59,7 +58,8 @@ public class AsteroidsGame extends Game {
 	//this maybe should not be static final
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f,
-														ASTEROID_SPAWN_INTERVAL = 1.f;
+														ASTEROID_SPAWN_INTERVAL = 15.f,
+														HUNTER_SPAWN_INTERVAL = 30.f;
 
 	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
 			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
@@ -105,10 +105,11 @@ public class AsteroidsGame extends Game {
 		bg.addLayer(ResourceLoader.getTexture("planets"));
 		bg.addLayer(ResourceLoader.getTexture("stars"));
 
-		to = new TextObject("DEFAULTstring", font);
-
 		asteroidSpawnTimer = new Timer(ASTEROID_SPAWN_INTERVAL);
 		asteroidSpawnTimer.setBehaviour(FiringBehaviours.getSpawnAsteroidBehaviour());
+
+		hunterSpawnTimer = new Timer(HUNTER_SPAWN_INTERVAL);
+		hunterSpawnTimer.setBehaviour(FiringBehaviours.getHunterSpawnBehaviour());
 
 		float boundx = player.getPosition().x + GAME_BOUNDS_WIDTH / 4.f;
 		float boundy = player.getPosition().x + GAME_BOUNDS_HEIGHT / 4.f;
@@ -144,9 +145,6 @@ public class AsteroidsGame extends Game {
 	public void update(float timestep) {
 
 		bg.move(player.getDeltaPosition(), timestep);
-
-		// puffSpawner.setTarget(new Vector2f(player.getDeltaPosition().x, player.getDeltaPosition().y));
-		// puffSpawner.setLocation(new Vector2f(player.getPosition().x, player.getPosition().y));
 		moveCamera();
 
 		QuadTree qt = new QuadTree(-3000, -3000, 3000, 3000);
@@ -163,7 +161,8 @@ public class AsteroidsGame extends Game {
 				continue;
 			}
 			E.update(timestep);
-			qt.insert(E);
+			if (!(E instanceof SmokePuff))
+				qt.insert(E);
 		}
 
 		if (firing){
@@ -172,7 +171,9 @@ public class AsteroidsGame extends Game {
 		player.setDirection(direction);
 		if (accelerating) {
 			player.accelerate(timestep);
-			// puffSpawner.execute();
+			puffSpawner.setTarget(new Vector2f(player.getAcceleration().x, player.getAcceleration().y));
+			puffSpawner.setLocation(new Vector2f(player.getPosition().x, player.getPosition().y));
+			puffSpawner.execute();
 		}
 
 
@@ -189,7 +190,13 @@ public class AsteroidsGame extends Game {
 			asteroidSpawnTimer.fire();
 		}
 
-		int a = PointsCalculator.calculateMove(new Vector2f(1.f), 1.f, new Vector2f(1.f), 1.f, new Vector2f(0.f), new Vector2f(1.f), 4);
+		if (HunterMissile.getHunterMissile().isDead()){
+			hunterSpawnTimer.update(timestep);
+		}
+		else {
+			int a = PointsCalculator.calculateMove(new Vector2f(1.f), new Vector2f(1.f), 1.f, new Vector2f(1.f), new Vector2f(1.f), 1.f, new Vector2f(0.f), new Vector2f(1.f), 4);
+			System.out.println(a);
+		}
 
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
