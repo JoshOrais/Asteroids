@@ -12,6 +12,7 @@ public class Hud {
     private Matrix4f projectionMatrix, viewMatrix;
     private GameFont font;
     private ArrayList<HudItem> items;
+    private HudItem hpText, livesText;
 
     public Hud(GameFont font, float width, float height){
       this.projectionMatrix = new Matrix4f().identity().ortho(0.f, width, 0.f, height, 0.f, 1.f);
@@ -24,15 +25,24 @@ public class Hud {
     }
 
     public void init(){
-      HudItem text = new HudItem(30.f, hudHeight - 90.f, 100, 30);
-      text.setText("HP : 100%");
-      items.add(text);
+      hpText = new HudItem(30.f, hudHeight - 90.f, 100, 30);
+      hpText.setText("HP : 100%");
+      items.add(hpText);
 
-      HudItem text2 = new HudItem(30.f, hudHeight - 90.f, 100, 30);
-      text2.setText("Lives : 3");
-      text2.setTexture(ResourceLoader.getTexture("anime"));
-      items.add(text2);
+      livesText = new HudItem(30.f, hudHeight - 127.f, 100, 30);
+      livesText.setText("Lives : 3");
+      livesText.setTexture(ResourceLoader.getTexture("anime"));
+      items.add(livesText);
+    }
 
+    public void setHP(float amount){
+      int hp = (int)amount;
+
+      hpText.setText("HP : "+String.valueOf(hp)+"%");
+    }
+
+    public void setLives(int amount){
+      livesText.setText("Lives : "+String.valueOf(amount));
     }
 
     public void render(Shader s){

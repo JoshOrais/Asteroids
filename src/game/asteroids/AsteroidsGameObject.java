@@ -70,6 +70,8 @@ public abstract class AsteroidsGameObject extends GameEntity {
 
 		width = Math.abs(xmax - xmin);
 		height = Math.abs(ymax - ymin);
+
+		if (!bounded) bounded = true;
 	}
 
 	public void setHP(float hp){

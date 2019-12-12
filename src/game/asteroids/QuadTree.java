@@ -76,12 +76,8 @@ public class QuadTree{
         return result;
 
       for (int i = 0; i < cursor; ++i){
-        if (objects[i] instanceof game.asteroids.entities.PlayerBullet)
-          System.out.println("BULLET CHECKED");
         if (objects[i].getHitBox().intersects(box)) {
             result.add(objects[i]);
-              if (objects[i] instanceof game.asteroids.entities.Asteroid)
-                System.out.println("ASTEROID CHECKED");
         }
       }
 

@@ -12,9 +12,9 @@ public class AsteroidFactory{
                       ASTEROID_SPEED_LARGE = 0.5f,
                       ASTEROID_SPEED_MEDIUM = 2.0f,
                       ASTEROID_SPEED_SMALL = 5.8f,
-                      ASTEROID_DAMAGE_LARGE = 3.f,
-                      ASTEROID_DAMAGE_MEDIUM = 2.f,
-                      ASTEROID_DAMAGE_SMALL = 1.f,
+                      ASTEROID_DAMAGE_LARGE = 7.f,
+                      ASTEROID_DAMAGE_MEDIUM = 5.2f,
+                      ASTEROID_DAMAGE_SMALL = 2.f,
                       ASTEROID_HP_LARGE = 37.f,
                       ASTEROID_HP_MEDIUM = 25.f,
                       ASTEROID_HP_SMALL = 15.f;

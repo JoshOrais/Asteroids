@@ -42,8 +42,18 @@ public class Timer{
 
   public void fire(){
     if (ready){
-      action.execute();
+      if (action != null)
+        action.execute();
       ready = false;
     }
+  }
+
+  public void reset(){
+    accumulatedTime = 0;
+    if (ready) ready = false;
+  }
+
+  public void setInterval(float interval){
+    this.interval = interval;
   }
 }

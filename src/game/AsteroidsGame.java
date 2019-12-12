@@ -37,8 +37,8 @@ public class AsteroidsGame extends Game {
 	private ArrayList<AsteroidsGameObject> activeEntities, deadEntities, queuedEntities;
 	private Camera cam;
 	private PlayerShip player;
-	private boolean accelerating, firing;
-	private int direction, asteroidCount = 0;
+	private boolean accelerating, firing, gameOver = false;
+	private int direction, asteroidCount = 0, lives = 3;
 	private Renderer renderer;
 	private Matrix4f projectionMatrix;
 	private Background bg;
@@ -149,7 +149,8 @@ public class AsteroidsGame extends Game {
 			E.setCollided(false);
 
 			if (E.isDead()) {
-				deadEntities.add(E);
+				if (!(E instanceof PlayerShip))
+					deadEntities.add(E);
 				continue;
 			}
 			E.update(timestep);
@@ -183,6 +184,18 @@ public class AsteroidsGame extends Game {
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
 
+		if (player.isDead()){
+			lives--;
+			if (lives <= 0){
+				gameOver = true;
+			}
+			else {
+				player.revive();
+			}
+			hud.setLives(lives);
+		}
+
+		hud.setHP(player.getHP());
 	}
 
 	@Override
@@ -193,9 +206,10 @@ public class AsteroidsGame extends Game {
 		for (GameEntity entity : activeEntities) {
 			renderer.renderEntity(entity, cam);
 		}
+		//draw player in front of everything
+		renderer.renderEntity(player, cam);
 
 		renderer.getEntityShader().bind();
-
 		renderer.renderHud(hud);
 	}
 
