@@ -11,7 +11,8 @@ public class DeathBehaviours{
   public static final int BIG_ASTEROID_ON_DEATH_SPAWN_COUNT = 3,
                           MEDIUM_ASTEROID_ON_DEATH_SPAWN_COUNT = 5;
   public static final float HEALING_POWER_UP_CHANCE = 1.19f,
-                            TRIPLE_FIRE_POWER_UP_CHANCE = 1.19f;
+                            TRIPLE_FIRE_POWER_UP_CHANCE = 1.19f,
+                            SHIELD_POWER_UP_CHANCE = 1.19f;
 
   public static Behavior getbigAsteroidDeath() {
     return new bigAsteroidDeath();
@@ -46,6 +47,10 @@ public class DeathBehaviours{
       if (TRIPLE_FIRE_POWER_UP_CHANCE >= Math.random()){
         AsteroidsGame.getGame().addEntity(TriplePowerUp.createPowerUp(location));
       }
+
+      if (SHIELD_POWER_UP_CHANCE >= Math.random()){
+        AsteroidsGame.getGame().addEntity(ShieldPowerUp.createPowerUp(location));
+      }
     }
   }
 
@@ -78,5 +83,5 @@ public class DeathBehaviours{
       HunterMissile.getHunterMissile().spawn(location, hunter_vel);
       System.out.println("SPAWNED HUNTER");
     }
-  }
+  }*/
 }
