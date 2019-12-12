@@ -18,7 +18,7 @@ public class Asteroid extends AsteroidsGameObject{
     this.max_velocity = 1.0f;
     this.hitbox = new HitBox(this.position, scale);
 		setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
-		setSprite(new StaticSprite(ResourceLoader.getTexture("default")));
+		setSprite(new StaticSprite(ResourceLoader.getTexture("asteroid")));
   }
 
   public void change(){
