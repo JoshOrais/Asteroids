@@ -11,7 +11,7 @@ public class DeathBehaviours{
   public static final int BIG_ASTEROID_ON_DEATH_SPAWN_COUNT = 3,
                           MEDIUM_ASTEROID_ON_DEATH_SPAWN_COUNT = 5;
   public static final float HEALING_POWER_UP_CHANCE = 1.19f,
-                            TRIPLE_FIRE_POWER_UP_CHANCE = 0.09f;
+                            TRIPLE_FIRE_POWER_UP_CHANCE = 1.19f;
 
   public static Behavior getbigAsteroidDeath() {
     return new bigAsteroidDeath();
