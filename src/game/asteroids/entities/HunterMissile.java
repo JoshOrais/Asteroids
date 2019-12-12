@@ -25,7 +25,7 @@ public class HunterMissile extends AsteroidsGameObject{
     this.max_velocity = MAX_VELOCITY;
     this.hitbox = new HitBox(this.position, scale);
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
-    setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
+    setSprite(new StaticSprite(ResourceLoader.getTexture("missile")));
     setTimedLife(true);
     setLifeSpan(10.f);
     alive = false;

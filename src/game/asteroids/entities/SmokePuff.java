@@ -8,7 +8,7 @@ import engine.ResourceLoader;
 import org.joml.*;
 
 public class SmokePuff extends Particle{
-  public static final float SMOKEPUFFSPEED = 0.02f;
+  public static final float SMOKEPUFFSPEED = 0.01f;
 
   public SmokePuff(Vector3f loc, Vector2f initialVelocity){
     this.velocity= initialVelocity;
@@ -16,20 +16,17 @@ public class SmokePuff extends Particle{
     this.max_velocity = SMOKEPUFFSPEED;
     this.position = loc;
 
-    this.scale = 5.2f;
+    this.scale = 8f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
-    AnimatedSprite asprite = new AnimatedSprite(4, 0.12f);
+    AnimatedSprite asprite = new AnimatedSprite(5, 0.1f);
     asprite.addFrame(ResourceLoader.getTexture("smoke_01"));
     asprite.addFrame(ResourceLoader.getTexture("smoke_02"));
     asprite.addFrame(ResourceLoader.getTexture("smoke_03"));
     asprite.addFrame(ResourceLoader.getTexture("smoke_04"));
     asprite.addFrame(ResourceLoader.getTexture("smoke_05"));
-    asprite.addFrame(ResourceLoader.getTexture("smoke_06"));
-    asprite.addFrame(ResourceLoader.getTexture("smoke_07"));
-    asprite.addFrame(ResourceLoader.getTexture("smoke_08"));
     setSprite(asprite);
-    setLifeSpan(0.3f);
+    setLifeSpan(0.12f);
   }
 
   public void update(float interval){
