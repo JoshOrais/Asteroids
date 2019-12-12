@@ -12,9 +12,10 @@ public class Hud {
     private Matrix4f projectionMatrix, viewMatrix;
     private GameFont font;
     private ArrayList<HudItem> items;
-    private HudItem hpText, livesText, invulsplat;
+    private HudItem hpText, livesText, invulsplat, respawnTimer;
     private boolean doInvulsplat = false;
     private boolean oneFrameDelay = false;
+    private float flashTime = 0.f, respawnTime = 0.f;
 
     public Hud(GameFont font, float width, float height){
       this.projectionMatrix = new Matrix4f().identity().ortho(0.f, width, 0.f, height, 0.f, 1.f);
@@ -38,16 +39,38 @@ public class Hud {
 
       invulsplat = new HudItem(0, 0, hudWidth, hudHeight);
       invulsplat.setTexture(ResourceLoader.getTexture("invulsplat"));
-      
+
       HudItem hud = new HudItem(0, 0, hudWidth, hudHeight);
       hud.setTexture(ResourceLoader.getTexture("hud"));
       items.add(hud);
+
+      respawnTimer = new HudItem(300.f, hudHeight - 300.f, 100, 80);
+    }
+
+    public void flash(){
+      flashTime = 1.f;
+    }
+
+    public void respawn(float time){
+      if (respawnTime <= 0.f)
+        respawnTime = time;
     }
 
     public void setHP(float amount){
       int hp = (int)amount;
 
       hpText.setText("HP : "+String.valueOf(hp)+"%");
+    }
+
+    public void update(float interval){
+      flashTime -= interval;
+      if (flashTime < 0.f) flashTime = 0.f;
+
+      if (respawnTime > 0.f){
+        respawnTime -= interval;
+        respawnTimer.setText("Respawn in : " + String.valueOf(respawnTime));
+        flashTime = 1.f;
+      }
     }
 
     public void setLives(int amount){
@@ -58,6 +81,7 @@ public class Hud {
       s.bind();
       s.setUniformMatrix4f("projection", projectionMatrix);
       s.setUniformMatrix4f("view", viewMatrix);
+      s.setUniform1f("flash", flashTime);
       for (HudItem i : items){
         s.setUniformMatrix4f("model", i.getModelMatrix());
         if (i.getTexture() != null){
@@ -77,6 +101,12 @@ public class Hud {
       }
 
       oneFrameDelay = doInvulsplat;
+
+      if (respawnTime > 0.f){
+        s.setUniformMatrix4f("model", respawnTimer.getModelMatrix());
+        font.getTexture().bind();
+        respawnTimer.getText().getMesh().render(s);
+      }
     }
 
     public void setInvulSplat(boolean a){

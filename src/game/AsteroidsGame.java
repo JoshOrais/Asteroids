@@ -47,7 +47,7 @@ public class AsteroidsGame extends Game {
 	private GameFont font;
 	private Hud hud;
 	private TextObject to;
-	private Timer asteroidSpawnTimer, hunterSpawnTimer;
+	private Timer asteroidSpawnTimer, hunterSpawnTimer, respawnTimer;
 	private Behavior puffSpawner;
 
 	private AsteroidsGame() {};
@@ -59,7 +59,8 @@ public class AsteroidsGame extends Game {
 	public static final float GAME_BOUNDS_MIN_X = -3000.0f, GAME_BOUNDS_MAX_X =  3000.0f,
 							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f,
 														ASTEROID_SPAWN_INTERVAL = 15.f,
-														HUNTER_SPAWN_INTERVAL = 10.f;
+														HUNTER_SPAWN_INTERVAL = 20.f,
+														RESPAWN_TIME = 10.f;
 
 	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
 			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
@@ -110,6 +111,8 @@ public class AsteroidsGame extends Game {
 
 		hunterSpawnTimer = new Timer(HUNTER_SPAWN_INTERVAL);
 		hunterSpawnTimer.setBehaviour(FiringBehaviours.getHunterSpawnBehaviour());
+
+		respawnTimer = new Timer(RESPAWN_TIME);
 
 		float boundx = player.getPosition().x + GAME_BOUNDS_WIDTH / 4.f;
 		float boundy = player.getPosition().x + GAME_BOUNDS_HEIGHT / 4.f;
@@ -206,18 +209,24 @@ public class AsteroidsGame extends Game {
 		deadEntities.clear();
 
 		if (player.isDead()){
-			lives--;
+			hud.respawn(RESPAWN_TIME);
 			if (lives <= 0){
 				gameOver = true;
 			}
 			else {
-				player.revive();
+				respawnTimer.update(timestep);
+				if (respawnTimer.isReady()){
+					lives--;
+					respawnTimer.fire();
+					player.revive();
+				}
 			}
 			hud.setLives(lives);
 		}
 
 		hud.setHP(player.getHP());
 		hud.setInvulSplat(player.isInvulnerable());
+		hud.update(timestep);
 	}
 
 	@Override
@@ -225,9 +234,9 @@ public class AsteroidsGame extends Game {
 		glClear(GL_COLOR_BUFFER_BIT);
 		renderer.renderBackground(bg);
 
-		for (GameEntity entity : activeEntities) {
-			renderer.renderEntity(entity, cam);
-			if (entity instanceof HunterMissile) System.out.println("I SHOULD BE DRAWN BITCH");
+		for (AsteroidsGameObject entity : activeEntities) {
+			if (!entity.isDead())
+				renderer.renderEntity(entity, cam);
 		}
 		//draw player in front of everything
 		renderer.renderEntity(player, cam);
@@ -258,10 +267,14 @@ public class AsteroidsGame extends Game {
 		queuedEntities.add(E);
 	}
 
+	public void flashDamage(){
+		hud.flash();
+	}
+
 	public void loadShaders() throws Exception{
 		ResourceLoader.addShader("background", "../res/shaders/foreground.vs", "../res/shaders/background.fs");
 		ResourceLoader.addShader("entity", "../res/shaders/foreground.vs", "../res/shaders/foreground.fs");
-		ResourceLoader.addShader("hud", "../res/shaders/foreground.vs", "../res/shaders/foreground.fs");
+		ResourceLoader.addShader("hud", "../res/shaders/foreground.vs", "../res/shaders/hud.fs");
 	}
 
 	public void loadTextures() throws Exception{

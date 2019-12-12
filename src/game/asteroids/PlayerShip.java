@@ -5,6 +5,7 @@ import org.joml.Vector2f;
 import engine.ResourceLoader;
 import game.asteroids.graphics.StaticSprite;
 import game.asteroids.entities.*;
+import game.AsteroidsGame;
 
 public class PlayerShip extends AsteroidsGameObject{
 	private float angle;
@@ -101,6 +102,7 @@ public class PlayerShip extends AsteroidsGameObject{
 	@Override
 	public void damage(float amount){
 		addIFrames(1.15f);
+		AsteroidsGame.getGame().flashDamage();
 		super.damage(amount);
 	}
 

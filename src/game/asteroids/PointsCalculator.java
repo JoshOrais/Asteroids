@@ -89,10 +89,6 @@ public static int calculateMove(Vector2f playerloc, Vector2f player_vel, float p
   }
   float points3 = calculatePlayerMove(playerloc, player_vel, player_rotation, h_move3, h_vel3, hunter_rotation, closestMissile, missile_velocity, depth);
   if (points3 > points1) biggest = 3;
-
-  System.out.println("POINTS ARE " + points1 +"," + points2 + ","+ points3 );
-  System.out.println("PICKED " + biggest);
-
   return biggest;
 }
 }
