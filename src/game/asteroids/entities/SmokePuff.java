@@ -8,7 +8,7 @@ import engine.ResourceLoader;
 import org.joml.*;
 
 public class SmokePuff extends AsteroidsGameObject{
-  public static final float SMOKEPUFFSPEED = 0.17f;
+  public static final float SMOKEPUFFSPEED = 0.02f;
 
   public SmokePuff(Vector3f loc, Vector2f initialVelocity){
     this.velocity= initialVelocity;
@@ -19,13 +19,13 @@ public class SmokePuff extends AsteroidsGameObject{
     this.scale = 5.2f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
-    AnimatedSprite asprite = new AnimatedSprite(4, 0.35f);
+    AnimatedSprite asprite = new AnimatedSprite(4, 0.12f);
     asprite.addFrame(ResourceLoader.getTexture("puff_1"));
     asprite.addFrame(ResourceLoader.getTexture("puff_2"));
     asprite.addFrame(ResourceLoader.getTexture("puff_3"));
     asprite.addFrame(ResourceLoader.getTexture("puff_4"));
     setSprite(asprite);
-    setLifeSpan(0.35f);
+    setLifeSpan(0.13f);
   }
 
   public void update(float interval){
