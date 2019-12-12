@@ -20,7 +20,7 @@ public class TriplePowerUp extends AsteroidsGameObject{
     this.max_velocity = 1.0f;
     this.hitbox = new HitBox(this.position, scale);
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
-    setSprite(new StaticSprite(ResourceLoader.getTexture("bullet")));
+    setSprite(new StaticSprite(ResourceLoader.getTexture("triple")));
     setDeathBehaviour(DeathBehaviours.getPowerUpSplash());
   }
 
