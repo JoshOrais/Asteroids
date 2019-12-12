@@ -69,4 +69,10 @@ public class FiringBehaviours{
       }
     }
   }
+
+  public static class spawnHunterSpawner{
+    public void execute(){
+
+    }
+  }
 }

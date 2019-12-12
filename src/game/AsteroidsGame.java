@@ -193,10 +193,6 @@ public class AsteroidsGame extends Game {
 		if (HunterMissile.getHunterMissile().isDead()){
 			hunterSpawnTimer.update(timestep);
 		}
-		else {
-			int a = PointsCalculator.calculateMove(new Vector2f(1.f), new Vector2f(1.f), 1.f, new Vector2f(1.f), new Vector2f(1.f), 1.f, new Vector2f(0.f), new Vector2f(1.f), 4);
-			System.out.println(a);
-		}
 
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
@@ -231,6 +227,11 @@ public class AsteroidsGame extends Game {
 		renderer.renderHud(hud);
 	}
 
+	public void addHunter(){
+		if (!activeEntities.contains(HunterMissile.getHunterMissile()) && !queuedEntities.contains(HunterMissile.getHunterMissile())){
+			queuedEntities.add(HunterMissile.getHunterMissile());
+		}
+	}
 
 	public void moveCamera() {
 		Vector2f m = new Vector2f(player.getPosition().x, player.getPosition().y);

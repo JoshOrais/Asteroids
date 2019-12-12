@@ -63,4 +63,15 @@ public class DeathBehaviours{
       AsteroidsGame.getGame().addEntity(new SplashParticle(new Vector3f(location, 0.0f), 0.25f));
     }
   }
+
+  public static class spawnHunter{
+    public void execute(){
+      Vector3f player_loc3 = Asteroids.getGame().getPlayer().getPosition();
+      Vector2f hunter_vel = new Vector2f(player_loc3.x, player_loc3.y);
+      Vector2f hunter_loc = new Vector2f(location);
+      hunter_vel.sub(hunter_loc);
+
+      HunterMissile.getHunterMissile().spawn(location, hunter_vel);
+    }
+  }
 }
