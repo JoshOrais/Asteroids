@@ -248,19 +248,19 @@ public class AsteroidsGame extends Game {
 	}
 
 	public void loadTextures() throws Exception{
-		ResourceLoader.addTexture("rocket","../res/textures/player.png");
-		ResourceLoader.addTexture("font","../res/textures/font.png");
-		ResourceLoader.addTexture("stars","../res/textures/stars.png");
-		ResourceLoader.addTexture("planets","../res/textures/planets.png");
-		ResourceLoader.addTexture("nebula","../res/textures/nebula.png");
-		ResourceLoader.addTexture("bullet","../res/textures/try.png");
-		ResourceLoader.addTexture("asteroid","../res/textures/art_assets/asteroid.png");
-		ResourceLoader.addTexture("anime","../res/textures/yay.png");
-		ResourceLoader.addTexture("invulsplat","../res/textures/Forcefield.png");
-		ResourceLoader.addTexture("puff_1","../res/textures/puff_1.png");
-		ResourceLoader.addTexture("puff_2","../res/textures/puff_2.png");
-		ResourceLoader.addTexture("puff_3","../res/textures/puff_3.png");
-		ResourceLoader.addTexture("puff_4","../res/textures/puff_4.png");
+		ResourceLoader.addTexture("rocket",    "../res/textures/player.png");
+		ResourceLoader.addTexture("font",      "../res/textures/font.png");
+		ResourceLoader.addTexture("stars",     "../res/textures/stars.png");
+		ResourceLoader.addTexture("planets",   "../res/textures/planets.png");
+		ResourceLoader.addTexture("nebula",    "../res/textures/nebula.png");
+		ResourceLoader.addTexture("bullet",    "../res/textures/try.png");
+		ResourceLoader.addTexture("asteroid",  "../res/textures/art_assets/asteroid	.png");
+		ResourceLoader.addTexture("anime",     "../res/textures/yay.png");
+		ResourceLoader.addTexture("invulsplat","../res/textures/art_assets/HUD.png");
+		ResourceLoader.addTexture("puff_1",    "../res/textures/puff_1.png");
+		ResourceLoader.addTexture("puff_2",    "../res/textures/puff_2.png");
+		ResourceLoader.addTexture("puff_3",    "../res/textures/puff_3.png");
+		ResourceLoader.addTexture("puff_4",    "../res/textures/puff_4.png");
 	}
 
 	public void dispose(){
