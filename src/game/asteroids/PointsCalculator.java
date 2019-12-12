@@ -8,8 +8,8 @@ public class PointsCalculator{
   public static final float MISSILE_DIST_FACTOR = 0.0f;
 
   public static float calcHunterPoints(Vector2f playerloc, Vector2f hunterloc, Vector2f closestMissile){
-    float player_dist = hunterloc.distance(playerloc);
-    float missile_dist = hunterloc.distance(closestMissile);
+    float player_dist = MathHelper.toroidalDistance(playerloc, hunterloc, 1.f, 1.f);
+    float missile_dist = MathHelper.toroidalDistance(closestMissile, hunterloc, 1.f, 1.f);
 
     return missile_dist * MISSILE_DIST_FACTOR - player_dist * PLAYER_DIST_FACTOR;
   }

@@ -12,6 +12,7 @@ import game.asteroids.HitBox;
 import engine.ResourceLoader;
 public class HunterMissile extends AsteroidsGameObject{
   public static HunterMissile instance = null;
+  private Vector3f closestMissile = new Vector3f(0.f, 0.f, 0.f);
 
   public static final float MAX_VELOCITY = 4.08f,
                             SIZE = 12.f,
@@ -54,10 +55,10 @@ public class HunterMissile extends AsteroidsGameObject{
     System.out.println("I AM ALIVE, MY position IS "+ position.x + ", " + position.y);
     System.out.println("PLAYER position is "+ AsteroidsGame.getGame().getPlayer().getPosition().x + ", " + AsteroidsGame.getGame().getPlayer().getPosition().y);
     Vector3f player_pos3 = AsteroidsGame.getGame().getPlayer().getPosition();
-    Vector3f player_vel3 = AsteroidsGame.getGame().getPlayer().getPosition();
+    Vector2f player_vel2 = AsteroidsGame.getGame().getPlayer().getVelocity();
 
     Vector2f player_pos = new Vector2f(player_pos3.x, player_pos3.y);
-    Vector2f player_vel = new Vector2f(player_vel3.x, player_vel3.y);
+    Vector2f player_vel = new Vector2f(player_vel2);
 
     Vector2f hunter_pos = new Vector2f(position.x, position.y);
     Vector2f hunter_vel = new Vector2f(velocity);
@@ -78,7 +79,11 @@ public class HunterMissile extends AsteroidsGameObject{
     }
 
     hunter_vel.mul(rot);
+    velocity = hunter_vel;
     position.add(new Vector3f(hunter_vel, 0.f));
+  }
+
+  public void setClosestMissile(Vector3f pos){
 
   }
 
