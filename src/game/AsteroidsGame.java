@@ -49,6 +49,7 @@ public class AsteroidsGame extends Game {
 	private TextObject to;
 	private Timer asteroidSpawnTimer, hunterSpawnTimer, respawnTimer;
 	private Behavior puffSpawner;
+	private int score;
 
 	private AsteroidsGame() {};
 
