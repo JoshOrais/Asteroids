@@ -18,7 +18,7 @@ public class HunterSpawner extends Particle{
     this.scale = 30.2f;
     this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
-    AnimatedSprite asprite = new AnimatedSprite(2, 2.1f);
+    AnimatedSprite asprite = new AnimatedSprite(2, 0.5f);
     asprite.addFrame(ResourceLoader.getTexture("UFO"));
     asprite.addFrame(ResourceLoader.getTexture("UFO2"));
     setSprite(asprite);

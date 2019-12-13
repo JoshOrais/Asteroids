@@ -32,6 +32,7 @@ public class HunterMissile extends AsteroidsGameObject{
   }
 
   public void collisionAction(AsteroidsGameObject K){
+    System.out.println("AM I COLLIDING?");
     if (K instanceof PlayerShip || K instanceof Asteroid){
       K.damage(95.f);
       kill();
@@ -40,7 +41,9 @@ public class HunterMissile extends AsteroidsGameObject{
 
   public void spawn(Vector2f location, Vector2f initialVelocity){
     this.position = new Vector3f(location, 0.f);
+    setCollided(false);
     setAge(0.f);
+    getHitBox().setCenter(new Vector2f(location));
 
     this.velocity = initialVelocity.normalize().mul(MAX_VELOCITY);
     double acos = Math.acos(velocity.x / velocity.length());
@@ -80,6 +83,7 @@ public class HunterMissile extends AsteroidsGameObject{
     hunter_vel.mul(rot);
     velocity = hunter_vel;
     position.add(new Vector3f(hunter_vel, 0.f));
+    getHitBox().setCenter(position.x, position.y);
   }
 
   public void setClosestMissile(Vector3f pos){

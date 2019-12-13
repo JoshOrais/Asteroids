@@ -63,7 +63,7 @@ public class AsteroidsGame extends Game {
 							  						GAME_BOUNDS_MIN_Y = -3000.0f, GAME_BOUNDS_MAX_Y =  3000.0f,
 														ASTEROID_SPAWN_INTERVAL = 15.f,
 														HUNTER_SPAWN_INTERVAL = 20.f,
-														RESPAWN_TIME = 10.f;
+														RESPAWN_TIME = 5.f;
 
 	public static final float GAME_BOUNDS_HEIGHT = GAME_BOUNDS_MAX_Y - GAME_BOUNDS_MIN_Y,
 			 											GAME_BOUNDS_WIDTH  = GAME_BOUNDS_MAX_X - GAME_BOUNDS_MIN_X;
@@ -89,6 +89,7 @@ public class AsteroidsGame extends Game {
 		lives = 3;
 		fireOnce = true;
 		gameOver = false;
+		score = 0;
 
 		renderer = new Renderer();
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
@@ -210,7 +211,7 @@ public class AsteroidsGame extends Game {
 			asteroidSpawnTimer.fire();
 		}
 
-		if (HunterMissile.getHunterMissile().isDead()){
+		if (HunterMissile.getHunterMissile().isDead() && !player.isDead()){
 			hunterSpawnTimer.update(timestep);
 			if (hunterSpawnTimer.isReady()){
 				hunterSpawnTimer.getBehaviour().setLocation(player.getPosition().x,player.getPosition().y);
@@ -246,6 +247,7 @@ public class AsteroidsGame extends Game {
 		hud.setHP(player.getHP());
 		hud.setInvulSplat(player.isInvulnerable());
 		hud.update(timestep);
+		hud.setPoints(score);
 		hud.setGameOver(gameOver);
 	}
 

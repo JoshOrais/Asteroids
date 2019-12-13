@@ -1,6 +1,7 @@
 package game.asteroids.graphics;
 
 import java.util.ArrayList;
+import java.text.DecimalFormat;
 
 import org.joml.Matrix4f;
 
@@ -12,10 +13,12 @@ public class Hud {
     private Matrix4f projectionMatrix, viewMatrix;
     private GameFont font;
     private ArrayList<HudItem> items;
-    private HudItem hpText, livesText, invulsplat, respawnTimer, gameOverText, gameOverSubText;
+    private HudItem hpText, livesText, invulsplat, respawnTimer, pointText, gameOverText, gameOverSubText, gameOverPointsText;
     private boolean doInvulsplat = false;
     private boolean oneFrameDelay = false, gameOver = false;
     private float flashTime = 0.f, respawnTime = 0.f;
+    private int score;
+    private DecimalFormat df;
 
     public Hud(GameFont font, float width, float height){
       this.projectionMatrix = new Matrix4f().identity().ortho(0.f, width, 0.f, height, 0.f, 1.f);
@@ -34,8 +37,11 @@ public class Hud {
 
       livesText = new HudItem(30.f, hudHeight - 127.f, 100, 30);
       livesText.setText("Lives : 3");
-      livesText.setTexture(ResourceLoader.getTexture("anime"));
       items.add(livesText);
+
+      pointText = new HudItem(30.f, hudHeight - 157.f, 100, 30);
+      pointText.setText("Score : 0");
+      items.add(pointText);
 
       invulsplat = new HudItem(0, 0, hudWidth, hudHeight);
       invulsplat.setTexture(ResourceLoader.getTexture("invulsplat"));
@@ -47,10 +53,15 @@ public class Hud {
       gameOverText = new HudItem(100.f, hudHeight - 200.f, 100, 80);
       gameOverText.setText("GAME OVER");
 
-      gameOverSubText = new HudItem(100.f, hudHeight - 237.f, 100, 30);
+      gameOverSubText = new HudItem(100.f, hudHeight - 267.f, 100, 30);
       gameOverSubText.setText("Press R to restart");
 
+      gameOverPointsText = new HudItem(100.f, hudHeight - 237.f, 100, 30);
+      gameOverPointsText.setText("Final Score : ");
+
       respawnTimer = new HudItem(300.f, hudHeight - 300.f, 100, 80);
+
+      df = new DecimalFormat("#.000");
     }
 
     public void flash(){
@@ -60,6 +71,12 @@ public class Hud {
     public void respawn(float time){
       if (respawnTime <= 0.f)
         respawnTime = time;
+    }
+
+    public void setPoints(int score){
+      this.score = score;
+      gameOverPointsText.setText("Final Score : " + String.valueOf(score));
+      pointText.setText("Score : " + String.valueOf(score));
     }
 
     public void setHP(float amount){
@@ -74,7 +91,7 @@ public class Hud {
 
       if (respawnTime > 0.f){
         respawnTime -= interval;
-        respawnTimer.setText("Respawn in : " + String.valueOf(respawnTime));
+        respawnTimer.setText("Respawn in : " + df.format(respawnTime));
         flashTime = 1.f;
       }
     }
@@ -103,6 +120,10 @@ public class Hud {
         s.setUniformMatrix4f("model", gameOverSubText.getModelMatrix());
         font.getTexture().bind();
         gameOverSubText.getText().getMesh().render(s);
+
+        s.setUniformMatrix4f("model", gameOverPointsText.getModelMatrix());
+        font.getTexture().bind();
+        gameOverPointsText.getText().getMesh().render(s);
 
         return;
       }
