@@ -4,6 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
@@ -49,7 +50,7 @@ public class AsteroidsGame extends Game {
 	private TextObject to;
 	private Timer asteroidSpawnTimer, hunterSpawnTimer, respawnTimer;
 	private Behavior puffSpawner;
-	private int score;
+	private boolean runOnce = true;
 
 	private AsteroidsGame() {};
 
@@ -71,8 +72,20 @@ public class AsteroidsGame extends Game {
 
 	@Override
 	public void init() throws Exception {
-		loadShaders();
-		loadTextures();
+		if (runOnce){
+			loadShaders();
+			loadTextures();
+
+			font = ResourceLoader.buildFont("../res/shaders/font.font");
+			font.setTexture(ResourceLoader.getTexture("font"));
+			runOnce = false;
+		}
+		start();
+	}
+
+	public void start(){
+		asteroidCount = 0;
+		lives = 3;
 
 		renderer = new Renderer();
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
@@ -97,9 +110,6 @@ public class AsteroidsGame extends Game {
 		projectionMatrix.identity().ortho(0.0f, GAME_WIDTH, 0.0f, GAME_HEIGHT, -1.0f, 1.0f);
 		renderer.setProjectionMatrix(projectionMatrix);
 
-		font = ResourceLoader.buildFont("../res/shaders/font.font");
-		font.setTexture(ResourceLoader.getTexture("font"));
-
 		hud = new Hud(font, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 		bg = new Background(3);
@@ -122,10 +132,6 @@ public class AsteroidsGame extends Game {
 				AsteroidFactory.createLargeAsteroidWithinBounds(boundx, boundy, boundx + GAME_BOUNDS_WIDTH / 2.f, boundy + GAME_BOUNDS_HEIGHT / 2.f)
 				);
 		}
-
-		Vector2f a = new Vector2f(0.f, 0.f);
-		Vector2f b = new Vector2f();
-		a.add(new Vector2f(0.f, 1.f), b);
 	}
 
 	@Override
@@ -147,6 +153,9 @@ public class AsteroidsGame extends Game {
 				else {
 					firing = false;
 				}
+
+				if ( window.isKeyPressed(GLFW_KEY_DOWN))
+					 start();
 	}
 
 	@Override
