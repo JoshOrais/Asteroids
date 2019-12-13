@@ -51,6 +51,7 @@ public class AsteroidsGame extends Game {
 	private Timer asteroidSpawnTimer, hunterSpawnTimer, respawnTimer;
 	private Behavior puffSpawner;
 	private boolean runOnce = true, fireOnce = true;
+	private int score=0;
 
 	private AsteroidsGame() {};
 
@@ -332,5 +333,9 @@ public class AsteroidsGame extends Game {
 		if (GAME == null)
 			GAME = new AsteroidsGame();
 		return GAME;
+	}
+
+	public void addScore(int num){
+		score = score + num;
 	}
 }

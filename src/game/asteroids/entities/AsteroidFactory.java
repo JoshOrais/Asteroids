@@ -50,6 +50,7 @@ public class AsteroidFactory{
     Asteroid a =  new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_SMALL);
     a.setHP(ASTEROID_HP_SMALL);
     a.setHitDamage(ASTEROID_DAMAGE_SMALL);
+    a.setDeathBehaviour(DeathBehaviours.getSmallAsteroidDeath());
     return a;
   }
 

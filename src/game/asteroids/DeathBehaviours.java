@@ -20,6 +20,9 @@ public class DeathBehaviours{
   public static Behavior getMediumAsteroidDeath() {
     return new mediumAsteroidDeath();
   }
+  public static Behavior getSmallAsteroidDeath() {
+    return new smallAsteroidDeath();
+  }
 
   public static Behavior getPowerUpSplash(){
     return new powerUpSplash();
@@ -51,6 +54,9 @@ public class DeathBehaviours{
       if (SHIELD_POWER_UP_CHANCE >= Math.random()){
         AsteroidsGame.getGame().addEntity(ShieldPowerUp.createPowerUp(location));
       }
+
+      AsteroidsGame.getGame().addScore(40);
+
     }
   }
 
@@ -64,6 +70,14 @@ public class DeathBehaviours{
         vel.mul(rotation);
         AsteroidsGame.getGame().addEntity(AsteroidFactory.createSmallAsteroid(location, new Vector2f(vel)));
       }
+
+      AsteroidsGame.getGame().addScore(20);
+    }
+  }
+
+  public static class smallAsteroidDeath extends Behavior{
+    public void execute(){
+      AsteroidsGame.getGame().addScore(10);
     }
   }
 
