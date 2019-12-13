@@ -4,7 +4,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_LEFT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_RIGHT;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_DOWN;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_R;
 import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
 import static org.lwjgl.opengl.GL11.glClear;
 
@@ -50,7 +50,7 @@ public class AsteroidsGame extends Game {
 	private TextObject to;
 	private Timer asteroidSpawnTimer, hunterSpawnTimer, respawnTimer;
 	private Behavior puffSpawner;
-	private boolean runOnce = true;
+	private boolean runOnce = true, fireOnce = true;
 
 	private AsteroidsGame() {};
 
@@ -86,6 +86,8 @@ public class AsteroidsGame extends Game {
 	public void start(){
 		asteroidCount = 0;
 		lives = 3;
+		fireOnce = true;
+		gameOver = false;
 
 		renderer = new Renderer();
 		renderer.setEntityShader(ResourceLoader.getShader("entity"));
@@ -154,7 +156,7 @@ public class AsteroidsGame extends Game {
 					firing = false;
 				}
 
-				if ( window.isKeyPressed(GLFW_KEY_DOWN))
+				if ( gameOver && window.isKeyPressed(GLFW_KEY_R))
 					 start();
 	}
 
@@ -219,16 +221,22 @@ public class AsteroidsGame extends Game {
 		deadEntities.clear();
 
 		if (player.isDead()){
-			hud.respawn(RESPAWN_TIME);
+			if (fireOnce){
+				lives--;
+				hud.respawn(RESPAWN_TIME);
+				fireOnce = false;
+			}
+
 			if (lives <= 0){
 				gameOver = true;
 			}
+
 			else {
 				respawnTimer.update(timestep);
 				if (respawnTimer.isReady()){
-					lives--;
 					respawnTimer.fire();
 					player.revive();
+					fireOnce =true;
 				}
 			}
 			hud.setLives(lives);
@@ -237,6 +245,7 @@ public class AsteroidsGame extends Game {
 		hud.setHP(player.getHP());
 		hud.setInvulSplat(player.isInvulnerable());
 		hud.update(timestep);
+		hud.setGameOver(gameOver);
 	}
 
 	@Override

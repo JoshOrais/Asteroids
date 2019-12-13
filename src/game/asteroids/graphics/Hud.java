@@ -12,9 +12,9 @@ public class Hud {
     private Matrix4f projectionMatrix, viewMatrix;
     private GameFont font;
     private ArrayList<HudItem> items;
-    private HudItem hpText, livesText, invulsplat, respawnTimer;
+    private HudItem hpText, livesText, invulsplat, respawnTimer, gameOverText, gameOverSubText;
     private boolean doInvulsplat = false;
-    private boolean oneFrameDelay = false;
+    private boolean oneFrameDelay = false, gameOver = false;
     private float flashTime = 0.f, respawnTime = 0.f;
 
     public Hud(GameFont font, float width, float height){
@@ -43,6 +43,12 @@ public class Hud {
       HudItem hud = new HudItem(0, 0, hudWidth, hudHeight);
       hud.setTexture(ResourceLoader.getTexture("hud"));
       items.add(hud);
+
+      gameOverText = new HudItem(100.f, hudHeight - 200.f, 100, 80);
+      gameOverText.setText("GAME OVER");
+
+      gameOverSubText = new HudItem(100.f, hudHeight - 237.f, 100, 30);
+      gameOverSubText.setText("Press R to restart");
 
       respawnTimer = new HudItem(300.f, hudHeight - 300.f, 100, 80);
     }
@@ -82,6 +88,25 @@ public class Hud {
       s.setUniformMatrix4f("projection", projectionMatrix);
       s.setUniformMatrix4f("view", viewMatrix);
       s.setUniform1f("flash", flashTime);
+
+      if (gameOver){
+        flashTime = 1.f;
+
+        s.setUniformMatrix4f("model", invulsplat.getModelMatrix());
+        invulsplat.getTexture().bind();
+        ResourceLoader.getTranslatedQuadMesh().render(s);
+
+        s.setUniformMatrix4f("model", gameOverText.getModelMatrix());
+        font.getTexture().bind();
+        gameOverText.getText().getMesh().render(s);
+
+        s.setUniformMatrix4f("model", gameOverSubText.getModelMatrix());
+        font.getTexture().bind();
+        gameOverSubText.getText().getMesh().render(s);
+
+        return;
+      }
+
       for (HudItem i : items){
         s.setUniformMatrix4f("model", i.getModelMatrix());
         if (i.getTexture() != null){
@@ -107,6 +132,10 @@ public class Hud {
         font.getTexture().bind();
         respawnTimer.getText().getMesh().render(s);
       }
+    }
+
+    public void setGameOver(boolean g){
+      this.gameOver = g;
     }
 
     public void setInvulSplat(boolean a){
