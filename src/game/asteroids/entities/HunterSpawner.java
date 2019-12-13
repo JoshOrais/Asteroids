@@ -20,7 +20,7 @@ public class HunterSpawner extends Particle{
     setBounded(false);
     AnimatedSprite asprite = new AnimatedSprite(2, 2.1f);
     asprite.addFrame(ResourceLoader.getTexture("UFO"));
-    asprite.addFrame(ResourceLoader.getTexture("UFO"));
+    asprite.addFrame(ResourceLoader.getTexture("UFO2"));
     setSprite(asprite);
     setLifeSpan(1.7f);
     setDeathBehaviour(DeathBehaviours.getSpawnHunter());
