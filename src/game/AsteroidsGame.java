@@ -125,7 +125,6 @@ public class AsteroidsGame extends Game {
 		asteroidSpawnTimer.setBehaviour(FiringBehaviours.getSpawnAsteroidBehaviour());
 
 		hunterSpawnTimer = new Timer(HUNTER_SPAWN_INTERVAL);
-		hunterSpawnTimer.setBehaviour(FiringBehaviours.getHunterSpawnBehaviour());
 
 		respawnTimer = new Timer(RESPAWN_TIME);
 
@@ -211,14 +210,6 @@ public class AsteroidsGame extends Game {
 			asteroidSpawnTimer.fire();
 		}
 
-		if (HunterMissile.getHunterMissile().isDead() && !player.isDead()){
-			hunterSpawnTimer.update(timestep);
-			if (hunterSpawnTimer.isReady()){
-				hunterSpawnTimer.getBehaviour().setLocation(player.getPosition().x,player.getPosition().y);
-				hunterSpawnTimer.fire();
-			}
-		}
-
 		activeEntities.removeAll(deadEntities);
 		deadEntities.clear();
 
@@ -267,11 +258,6 @@ public class AsteroidsGame extends Game {
 		renderer.renderHud(hud);
 	}
 
-	public void addHunter(){
-		if (!activeEntities.contains(HunterMissile.getHunterMissile()) && !queuedEntities.contains(HunterMissile.getHunterMissile())){
-			queuedEntities.add(HunterMissile.getHunterMissile());
-		}
-	}
 
 	public void moveCamera() {
 		Vector2f m = new Vector2f(player.getPosition().x, player.getPosition().y);

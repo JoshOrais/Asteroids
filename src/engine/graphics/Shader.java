@@ -18,6 +18,7 @@ import static org.lwjgl.opengl.GL20.glGetUniformLocation;
 import static org.lwjgl.opengl.GL33.*;
 import static org.lwjgl.opengl.GL20.glShaderSource;
 import static org.lwjgl.opengl.GL20.glUniform1i;
+import static org.lwjgl.opengl.GL20.glUniform2fv;
 import static org.lwjgl.opengl.GL20.glUseProgram;
 import static org.lwjgl.opengl.GL20.glValidateProgram;
 import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
@@ -25,6 +26,7 @@ import static org.lwjgl.opengl.GL32.GL_GEOMETRY_SHADER;
 import java.nio.FloatBuffer;
 
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
 import org.lwjgl.system.MemoryStack;
 
 public class Shader {
@@ -109,6 +111,15 @@ public class Shader {
 	public void setUniform1f(String name, float value) {
 		glUniform1f(glGetUniformLocation(ID, name), value);
 	}
+
+        public void setUniform2fv(String name, float[] value) {
+           glUniform2fv(glGetUniformLocation(ID, name), value);
+        }
+
+        public void setUniform2fv(String name, Vector2f value) {
+           float[] values = new float[]{value.x, value.y};
+           glUniform2fv(glGetUniformLocation(ID, name), values);
+        }
 	
 	public void setUniformMatrix4f(String name, Matrix4f value) {
 		try (MemoryStack stack = MemoryStack.stackPush()){

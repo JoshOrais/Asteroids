@@ -28,10 +28,6 @@ public class DeathBehaviours{
     return new powerUpSplash();
   }
 
-  public static Behavior getSpawnHunter(){
-    return new spawnHunter();
-  }
-
   public static class bigAsteroidDeath extends Behavior{
     public void execute(){
       Vector2f vel = new Vector2f((float)Math.random() * 300.f, (float)Math.random() * 300.f);
@@ -43,20 +39,7 @@ public class DeathBehaviours{
         AsteroidsGame.getGame().addEntity(AsteroidFactory.createMediumAsteroid(location, new Vector2f(vel)));
       }
 
-      if (HEALING_POWER_UP_CHANCE >= Math.random()){
-        AsteroidsGame.getGame().addEntity(HealingPowerUp.createPowerUp(location));
-      }
-
-      if (TRIPLE_FIRE_POWER_UP_CHANCE >= Math.random()){
-        AsteroidsGame.getGame().addEntity(TriplePowerUp.createPowerUp(location));
-      }
-
-      if (SHIELD_POWER_UP_CHANCE >= Math.random()){
-        AsteroidsGame.getGame().addEntity(ShieldPowerUp.createPowerUp(location));
-      }
-
       AsteroidsGame.getGame().addScore(40);
-
     }
   }
 
@@ -83,19 +66,7 @@ public class DeathBehaviours{
 
   public static class powerUpSplash extends Behavior{
     public void execute(){
-      AsteroidsGame.getGame().addEntity(new SplashParticle(new Vector3f(location, 0.0f), 0.25f));
-    }
-  }
-
-  public static class spawnHunter extends Behavior{
-    public void execute(){
-      Vector3f player_loc3 = AsteroidsGame.getGame().getPlayer().getPosition();
-      Vector2f hunter_vel = new Vector2f(player_loc3.x, player_loc3.y);
-      Vector2f hunter_loc = new Vector2f(location);
-      hunter_vel.sub(hunter_loc);
-
-      HunterMissile.getHunterMissile().spawn(location, hunter_vel);
-      System.out.println("SPAWNED HUNTER");
+      AsteroidsGame.getGame().addEntity(new SplashParticle(location, 0.25f));
     }
   }
 }

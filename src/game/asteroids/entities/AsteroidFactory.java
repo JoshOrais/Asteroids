@@ -21,7 +21,7 @@ public class AsteroidFactory{
 
   public static Asteroid createLargeAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_LARGE);
-    Asteroid a = new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_LARGE);
+    Asteroid a = new Asteroid(new Vector2f(loc), velocity_actual, ASTEROID_SIZE_LARGE);
     a.setDeathBehaviour(DeathBehaviours.getbigAsteroidDeath());
     a.setHitDamage(ASTEROID_DAMAGE_LARGE);
     a.setHP(ASTEROID_HP_LARGE);
@@ -34,7 +34,7 @@ public class AsteroidFactory{
 
   public static Asteroid createMediumAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_MEDIUM);
-    Asteroid a = new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_MEDIUM);
+    Asteroid a = new Asteroid( new Vector2f(loc), velocity_actual, ASTEROID_SIZE_MEDIUM);
     a.setHP(ASTEROID_HP_MEDIUM);
     a.setHitDamage(ASTEROID_DAMAGE_MEDIUM);
     a.setDeathBehaviour(DeathBehaviours.getMediumAsteroidDeath());
@@ -47,7 +47,7 @@ public class AsteroidFactory{
 
   public static Asteroid createSmallAsteroid(Vector2f loc, Vector2f initialVelocity){
     Vector2f velocity_actual = initialVelocity.normalize().mul(ASTEROID_SPEED_SMALL);
-    Asteroid a =  new Asteroid( new Vector3f(loc, 0.0f), velocity_actual, ASTEROID_SIZE_SMALL);
+    Asteroid a =  new Asteroid( new Vector2f(loc), velocity_actual, ASTEROID_SIZE_SMALL);
     a.setHP(ASTEROID_HP_SMALL);
     a.setHitDamage(ASTEROID_DAMAGE_SMALL);
     a.setDeathBehaviour(DeathBehaviours.getSmallAsteroidDeath());

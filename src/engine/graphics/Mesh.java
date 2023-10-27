@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
 import static org.lwjgl.opengl.GL30.glBindVertexArray;
 import static org.lwjgl.opengl.GL30.glDeleteVertexArrays;
 import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL31.glDrawArraysInstanced;
 
 import java.nio.FloatBuffer;
 
@@ -95,6 +96,13 @@ public class Mesh {
 		glDrawArrays(GL_TRIANGLES, 0 , vertexcount);
 		unbind();
 	}
+
+  public void renderInstanced(Shader s, int instances) {
+    s.bind();
+    bind();
+    glDrawArraysInstanced(GL_TRIANGLES, 0, vertexcount, instances);
+    unbind();
+  }
 	
 	public void dispose() {
         glDisableVertexAttribArray(0);

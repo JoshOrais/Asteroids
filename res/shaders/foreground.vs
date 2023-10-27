@@ -9,9 +9,15 @@ out vec2 texCoords;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec2 uvCoords;
+uniform vec2 uvScale;
+uniform vec2 offsets[9];
 
 void main() {
-	gl_Position = projection * view * model * vec4(aPos, 1.0);
+        vec2 offset = offsets[gl_InstanceID];
+        vec4 pos = model * vec4(aPos, 1.0);
+        pos = pos + vec4(offset, 0.0, 0.0);
+	gl_Position = projection * view * pos;
 	aColor = aPos;
-	texCoords = aTexCoords;
+	texCoords = aTexCoords * uvScale + uvCoords * uvScale;
 }

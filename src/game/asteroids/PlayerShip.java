@@ -19,29 +19,25 @@ public class PlayerShip extends AsteroidsGameObject{
 	private Timer fireCooldown, iFrames, tripleFireDuration;
 	private boolean invul = false, tripleFire = false;
 
-	public PlayerShip() {
-		scale = 15.0f;
-		angle = 0.0f;
-		direction = 0;
-		this.max_velocity = MAX_VELOCITY;
-		this.hitbox = new HitBox(position, scale);
-		this.hitpoints = MAX_HP;
-		setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
-		singleBullet = FiringBehaviours.getNormalBulletBehaviour();
-		tripleBullet = FiringBehaviours.getTripleBulletBehaviour();
-		setFiringBehaviour(singleBullet);
-		fireCooldown = new Timer(ATTACK_RATE);
-		iFrames = new Timer(0.0f, false);
-		tripleFireDuration = new Timer(0.0f, false);
-	}
+  public PlayerShip() {
+    super(new Vector2f(), new Vector2f(), 1.f, null);
+    angle = 0.0f;
+    direction = 0;
+    setSprite(new StaticSprite(ResourceLoader.getTexture("rocket")));
+    singleBullet = FiringBehaviours.getNormalBulletBehaviour();
+    tripleBullet = FiringBehaviours.getTripleBulletBehaviour();
+    setFiringBehaviour(singleBullet);
+    fireCooldown = new Timer(ATTACK_RATE);
+    iFrames = new Timer(0.0f, false);
+    tripleFireDuration = new Timer(0.0f, false);
+  }
 
 	public void setDirection(int direction) {
 		this.direction = direction;
 	}
 
 	public void killVelocity() {
-		velocity.x = 0;
-		velocity.y = 0;
+		getVelocity().zero();
 	}
 
 	public void accelerate(float timestep) {
@@ -56,10 +52,10 @@ public class PlayerShip extends AsteroidsGameObject{
 		fireCooldown.fire();
 		float x = (float)Math.cos(Math.toRadians(angle));
 		float y = (float)Math.sin(Math.toRadians(angle));
-		Vector2f target = new Vector2f(x, y).mul(scale);
-		Vector2f location = new Vector2f(position.x, position.y);
-		target.add(velocity);
-		firingBehaviour.setLocation(position.x, position.y);
+		Vector2f target = new Vector2f(x, y).mul(1.f);
+		Vector2f location = new Vector2f(getPosition().x, getPosition().y);
+		target.add(getVelocity());
+		firingBehaviour.setLocation(getPosition().x, getPosition().y);
 		firingBehaviour.setTarget(target);
 		firingBehaviour.execute();
 	}
@@ -73,8 +69,8 @@ public class PlayerShip extends AsteroidsGameObject{
 		angle += (float)direction * HANDLING * interval;
 		move(interval); //physics object update
 		fireCooldown.update(interval);
-		sprite.update(interval);
-		rotation = angle;
+		getSprite().update(interval);
+                setRotation(angle);
 
 		if (isInvulnerable()){
 			iFrames.update(interval);
@@ -107,8 +103,8 @@ public class PlayerShip extends AsteroidsGameObject{
 	}
 
 	public void revive(){
-		this.hitpoints = MAX_HP;
-		this.alive = true;
+          setHP(MAX_HP);
+          setLiving(true);
 	}
 
 	public void addIFrames(float amount){
@@ -136,9 +132,7 @@ public class PlayerShip extends AsteroidsGameObject{
 	}
 
 	public void heal(float amount){
-		this.hitpoints += amount;
-		if (hitpoints > MAX_HP)
-			hitpoints = MAX_HP;
+		addHP(amount);
 	}
 
 }

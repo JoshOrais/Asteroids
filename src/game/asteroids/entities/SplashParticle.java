@@ -9,11 +9,9 @@ import org.joml.*;
 
 public class SplashParticle extends Particle{
 
-  public SplashParticle(Vector3f loc, float lifespan){
-    this.position = loc;
+  public SplashParticle(Vector2f loc, float lifespan){
+    super(loc, new Vector2f(), 5f);
 
-    this.scale = 5f;
-    this.hitbox = new HitBox(new Vector2f(loc.x, loc.y), scale);
     setBounded(false);
     AnimatedSprite asprite = new AnimatedSprite(4, lifespan);
     asprite.addFrame(ResourceLoader.getTexture("puff_1"));
@@ -26,7 +24,8 @@ public class SplashParticle extends Particle{
 
   public void update(float interval){
     age(interval);
-    this.scale += 2.5 * interval;
+    float newScale = getScale() + 2.5f * interval;
+    setScale(newScale);
     getSprite().update(interval);
   }
 

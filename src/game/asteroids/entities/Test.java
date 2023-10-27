@@ -12,11 +12,7 @@ public class Test extends AsteroidsGameObject{
                             SIZE = 15.f;
 
   public Test(){
-    this.position = new Vector3f(15.f, 30.f, 0.0f);
-    this.scale = 10.f;
-    this.velocity = new Vector2f(0.f, 0.f);
-    this.max_velocity = 1.0f;
-    this.hitbox = new HitBox(this.position, scale);
+    super(new Vector2f(15.f, 30.f), new Vector2f(), 10, null);
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
     AnimatedSprite a = new AnimatedSprite(3, 5.f);
     a.addFrame(ResourceLoader.getTexture("rocket"));

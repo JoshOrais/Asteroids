@@ -23,14 +23,9 @@ public class FiringBehaviours{
     return (Behavior)(new smokePuffSpawner());
   }
 
-  public static Behavior getHunterSpawnBehaviour(){
-    return new spawnHunterSpawner();
-  }
-
-
   public static class normalBulletBehaviour extends Behavior{
     public void execute(){
-      PlayerBullet pb = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), target);
+      PlayerBullet pb = new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector2f(location), target);
       AsteroidsGame.getGame().addEntity(pb);
     }
   }
@@ -43,7 +38,7 @@ public class FiringBehaviours{
       rot.identity().rotate(0.223599f);// -30.0 degrees in radians
 
       for (int i = 0; i < 3; ++i){
-        AsteroidsGame.getGame().addEntity(new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector3f(location, 0.0f), new Vector2f(vel)));
+        AsteroidsGame.getGame().addEntity(new PlayerBullet(AsteroidsGame.getGame().getPlayer(), new Vector2f(location), new Vector2f(vel)));
         vel.mul(rot);
       }
     }
@@ -65,19 +60,8 @@ public class FiringBehaviours{
       for (int i = 0; i < 3; ++i){
         float rand = (float)Math.random();
         Vector2f vel = new Vector2f(target.x, target.y);
-        AsteroidsGame.getGame().addEntity(new SmokePuff(new Vector3f(location.x + rand, location.y - rand, 0.0f), new Vector2f(vel.x, vel.y)));
+        AsteroidsGame.getGame().addEntity(new SmokePuff(new Vector2f(location.x + rand, location.y - rand), new Vector2f(vel.x, vel.y)));
       }
-    }
-  }
-
-  public static class spawnHunterSpawner extends Behavior{
-    public void execute(){
-      Vector2f offset = new Vector2f(0.f, 60.f);
-      float offset_rot = (float)Math.random() * 4.f;
-      Matrix2f rot = new Matrix2f().identity().rotate(offset_rot);
-      offset.mul(rot);
-      location.add(offset);
-      AsteroidsGame.getGame().addEntity(new HunterSpawner(new Vector3f(location, 0.f)));
     }
   }
 }

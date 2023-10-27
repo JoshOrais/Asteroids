@@ -2,25 +2,27 @@ package engine;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
+import org.joml.Vector2f;
 
 import engine.graphics.Shader;
 
 public abstract class GameEntity {
-	protected Vector3f position;
-	protected float scale, rotation;
-	protected Matrix4f modelMatrix;
+	private Vector2f position;
+	private float scale, rotation;
+	private Matrix4f modelMatrix;
 
 	public GameEntity() {
-		this.position = new Vector3f();
+		this.position = new Vector2f();
 		this.scale = 1.0f;
 		this.rotation = 0.0f;
 		this.modelMatrix = new Matrix4f();
 	}
 
-	public abstract void update(float interval);
-//	public abstract void render(Shader s);
 
-	public Vector3f getPosition() {
+
+	public abstract void update(float interval);
+
+	public Vector2f getPosition() {
 		return this.position;
 	}
 
@@ -41,18 +43,21 @@ public abstract class GameEntity {
 	}
 
 	public void setPosition(float x, float y, float z) {
-		this.position = new Vector3f(x,y,z);
-	}
+		position.set(x, y);
+	} 
 
-	public void addPosition(float offsetx, float offsety, float offsetz) {
-		Vector3f addf = new Vector3f(offsetx, offsety, offsetz);
+  public void setPosition(Vector2f pos) {
+    this.position = pos;
+  }
 
-		this.position.add(addf);
+	public void addPosition(float x, float y) {
+		position.add(x, y);
 	}
 
 	public Matrix4f getModelMatrix() {
 		modelMatrix.identity();
-		modelMatrix.translate(position).rotateZ((float)Math.toRadians(rotation)).scale(scale * 2);
+       
+		modelMatrix.translate(new Vector3f(position, 0.f)).rotateZ((float)Math.toRadians(rotation)).scale(scale * 2);
 		return modelMatrix;
 	}
 

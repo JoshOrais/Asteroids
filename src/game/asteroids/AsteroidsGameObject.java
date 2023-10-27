@@ -8,22 +8,42 @@ import game.asteroids.graphics.AnimatedSprite;
 import game.AsteroidsGame;
 
 public abstract class AsteroidsGameObject extends GameEntity {
-	protected Vector2f acceleration = new Vector2f(0.0f, 0.0f),
-				 	   				 velocity     = new Vector2f(0.0f, 0.0f),
-				 	   	 			 deltaPos	  	= new Vector2f(0.0f, 0.0f);
+  private Vector2f acceleration = new Vector2f(0.0f, 0.0f);
+  private Vector2f velocity = new Vector2f(0.0f, 0.0f);
+  private Vector2f deltaPos = new Vector2f(0.0f, 0.0f);
+  
+  private float max_velocity = 1.0f;  
+  private AnimatedSprite sprite;
+  private float xmin = 0, xmax = 0, ymin = 10, ymax = 10;
+  private float width = 10, height = 10;
+  private float lifespan = 0.f, age = 0.f;
+  private float hitpoints = 0.f, hitdamage = 0.f;
 
-	protected float max_velocity;
-	protected AnimatedSprite sprite;
-	protected float xmin = 0, xmax = 0, ymin = 10, ymax = 10, width = 10, height = 10,
-									lifespan = 0.f, age = 0.f,
-									hitpoints = 0.f, hitdamage = 0.f;
-	protected HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
-	protected boolean collided;
-	protected boolean alive = true, timedLife = false, bounded = false;
-	protected Behavior deathBehaviour = null;
+  private HitBox hitbox = new HitBox(new Vector2f(0.0f, 0.0f), 100.0f);
+  private boolean collided;
+  private boolean alive = true, timedLife = false, bounded = false;
+  private Behavior deathBehaviour = null;
 
-	public void setBounded(boolean bounded) {
-		this.bounded = bounded;
+  public AsteroidsGameObject(
+    Vector2f position,
+    Vector2f velocity,
+    float scale,
+    HitBox hitbox
+  ) {
+    setPosition(position);
+    setVelocity(velocity);
+    setScale(scale);
+  }
+
+  public AsteroidsGameObject(
+     float scale,
+     HitBox hitbox
+  ) {
+    this(new Vector2f(), new Vector2f(), scale, hitbox);
+  }
+
+  public void setBounded(boolean bounded) {
+    this.bounded = bounded;
 		if (bounded){
 			xmin = AsteroidsGame.GAME_BOUNDS_MIN_X;
 			ymin = AsteroidsGame.GAME_BOUNDS_MIN_Y;
@@ -41,14 +61,18 @@ public abstract class AsteroidsGameObject extends GameEntity {
 	}
 
 	public boolean isDead(){
-		return !alive;
+		return !isAlive();
 	}
 
+        public boolean isAlive() {
+          return alive;
+        }
+
+        public void setLiving(boolean living) {
+          alive = living;
+        }
+
 	public void kill(){
-		if (deathBehaviour != null){
-			deathBehaviour.setLocation(new Vector2f(position.x, position.y));
-			deathBehaviour.execute();
-		}
 		alive = false;
 	}
 
@@ -168,26 +192,31 @@ public abstract class AsteroidsGameObject extends GameEntity {
 		deltaPos.x = velocity.x;
 		deltaPos.y = velocity.y;
 
-		// System.out.println(velocity.x);
-
 		velocity.add(acceleration);
-		if (velocity.length() > max_velocity)
+
+		if (velocity.lengthSquared() > max_velocity * max_velocity) {
 			velocity.normalize().mul(max_velocity);
-		position.add(new Vector3f(velocity, 0.0f));
+		}
+
+		getPosition().add(velocity);
 		acceleration.zero();
 
 		if (bounded) {
-			if (position.x > xmax)
-				position.x = xmin + (position.x - xmax);
-			if (position.y > ymax)
-				position.y = ymin + (position.y - ymax);
-			if (position.x < xmin)
-				position.x = xmax + position.x  - xmin;
-			if (position.y < ymin)
-				position.y = ymax + position.y  - ymin;
+			if (getPosition().x > xmax)
+				getPosition().x = xmin + (getPosition().x - xmax);
+			if (getPosition().y > ymax)
+				getPosition().y = ymin + (getPosition().y - ymax);
+			if (getPosition().x < xmin)
+				getPosition().x = xmax + getPosition().x  - xmin;
+			if (getPosition().y < ymin)
+				getPosition().y = ymax + getPosition().y  - ymin;
 		}
 
 		if (hitbox != null)
-			hitbox.setCenter(position.x, position.y);
+			hitbox.setCenter(getPosition().x, getPosition().y);
 	}
+     
+       public void addHP(float delta) {
+         this.hitpoints += delta;
+       }
 }

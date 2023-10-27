@@ -19,11 +19,7 @@ public class HunterMissile extends AsteroidsGameObject{
                             HANDLING = 100.f;
 
   private HunterMissile(){
-    this.position = new Vector3f(0.f, 0.f, 0.f);
-    this.scale = SIZE;
-    this.velocity = new Vector2f(0.f, 0.f);
-    this.max_velocity = MAX_VELOCITY;
-    this.hitbox = new HitBox(this.position, scale);
+    super(new Vector3f(), new Vector3f(), SIZE, null);
     setBounds(-3000.f, -3000.f, 3000.f, 3000.f);
     setSprite(new StaticSprite(ResourceLoader.getTexture("missile")));
     setTimedLife(true);
