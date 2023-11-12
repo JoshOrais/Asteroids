@@ -1,4 +1,4 @@
-package game.A2;
+	package game.A2;
 
 import java.util.ArrayList;
 import java.awt.event.ActionListener;
@@ -28,6 +28,11 @@ public class TimedAction {
 
   public TimedAction(float duration) {
     this(duration, false);
+  }
+
+  public void reset() {
+    timeElapsed = 0;
+    exhausted = false;
   }
 
   public void countdown(float dT) {

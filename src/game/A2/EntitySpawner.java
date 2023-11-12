@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.joml.Vector2f;
 
+import game.A2.Sprite;
 import game.A2.entities.Particle;
 import game.A2.entities.AnimatedParticle;
 import game.A2.entities.Bullet;
@@ -42,7 +43,7 @@ public class EntitySpawner {
   }
 
   public void spawnParticle(
-    String textureKey, 
+    Sprite sprite, 
     Vector2f at, 
     Vector2f vel, 
     float lifespan, 
@@ -57,7 +58,7 @@ public class EntitySpawner {
     
     particleSpawns.add(
       new Particle(
-        textureKey, 
+        sprite, 
         new Vector2f(at).add(pjx, pjy),
         new Vector2f(vel).add(vjx, vjy),
         lifespan,
@@ -98,7 +99,7 @@ public class EntitySpawner {
     float size,
     float posJitter
   ) {
-    spawnParticle(textureKey, at, new Vector2f(), lifespan, size, posJitter, 0f);
+    spawnParticle(new StaticSprite(textureKey), at, new Vector2f(), lifespan, size, posJitter, 0f);
   }
 
   public void spawnParticle(

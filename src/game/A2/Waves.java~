@@ -1,0 +1,14 @@
+package game.A2;
+
+import java.util.ArrayList;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+
+public class Waves extends TimedAction implements ActionListener {
+  private float PC_DAMAGE_DEALT_MULT = 1f;
+  private float PC_DAMAGE_TAKEN_MULT = 1f;
+
+  public void actionPerformed(ActionEvent e) {
+  }
+}

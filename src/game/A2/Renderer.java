@@ -9,10 +9,16 @@ import engine.ResourceLoader;
 import engine.graphics.Camera;
 import engine.graphics.Shader;
 
+import game.A2.hud.HudItem;
+
 public class Renderer {
   private Matrix4f projMatrix;
   private Matrix4f modelMatrix;
   private Matrix4f viewMatrix;
+
+  private static final float PARRALLAX_MULT0 = 0.000005f;
+  private static final float PARRALLAX_MULT1 = 0.000001f;
+  private static final float PARRALLAX_MULT2 = 0.000010f;
 
   private final float HALF_WIDTH;
   private final float HALF_HEIGHT;
@@ -59,6 +65,12 @@ public class Renderer {
     );
   }
 
+  public void updateParrallax(Vector2f by) {
+    bgLayer0Translate.add(new Vector2f(by).mul(PARRALLAX_MULT0));
+    bgLayer1Translate.add(new Vector2f(by).mul(PARRALLAX_MULT1));
+    bgLayer2Translate.add(new Vector2f(by).mul(PARRALLAX_MULT2));
+  }
+
   public void render(GameObject e) {
     shader.bind();
 
@@ -70,17 +82,82 @@ public class Renderer {
 
     shader.setUniformMatrix4f("view", viewMatrix);
     shader.setUniformMatrix4f("model", modelMatrix);
-    shader.setUniform2fv("uvCoords", e.getSprite().getUVTranslate());
-    shader.setUniform2fv("uvScale", e.getSprite().getUVScale());
-  
-    //if (e.getSprite() != null) {
-    //   e.getSprite().bindTexture();
-    //}
 
     if (e.getSprite() != null) {
-      e.getSprite().getTexture().bind();
+      drawSprite(e.getSprite(), 9);
     }
+  }
 
-    ResourceLoader.getQuadMesh().renderInstanced(shader, 9);
+  public void renderHUD(HudItem b) {
+    renderHud(b, modelMatrix.identity());
+  }
+
+  public void renderHud(HudItem b, Matrix4f posMatrix) {
+    shader.bind();
+    Matrix4f mm = new Matrix4f(posMatrix);
+
+    mm.translate(new Vector3f(b.getPosition(), 0f));
+    for (HudItem c: b.getChildren()) {
+      renderHud(c, mm);
+    }
+    mm.translate(new Vector3f(
+      b.getSize().x * 0.5f, b.getSize().y * -0.5f, 0f
+    ));
+    mm.scale(new Vector3f(b.getSize(), 1f));
+
+    shader.setUniformMatrix4f("view", new Matrix4f());
+    shader.setUniformMatrix4f("model", mm);
+
+    drawSprite(b.getSprite(), 1);
+  }
+
+  public void drawSprite(Sprite sp, int instances) {
+    if (sp == null) return;
+
+    shader.setUniform2fv("uvCoords", sp.getUVTranslate());
+    shader.setUniform2fv("uvScale", sp.getUVScale());
+    
+    sp.getTexture().bind();
+    ResourceLoader.getQuadMesh().renderInstanced(shader, instances);
+  }
+
+  private Sprite bgLayer0 = new StaticSprite("nebula");
+  private Vector2f bgLayer0Scale = new Vector2f();
+  private Vector2f bgLayer0Translate = new Vector2f();
+  private Sprite bgLayer1 = new StaticSprite("stars01");
+  private Vector2f bgLayer1Scale = new Vector2f();
+  private Vector2f bgLayer1Translate = new Vector2f();
+  private Sprite bgLayer2 = new StaticSprite("asteroid_field");
+  private Vector2f bgLayer2Scale = new Vector2f();
+  private Vector2f bgLayer2Translate = new Vector2f();
+
+  public void drawBackground() {
+    shader.bind();
+    modelMatrix.identity();
+    modelMatrix.scale(HALF_WIDTH * 4f, HALF_HEIGHT * 4f, 1.0f);
+
+    bgLayer0Scale.set(HALF_WIDTH / 300f, HALF_HEIGHT / 300f);
+
+    shader.setUniformMatrix4f("view", new Matrix4f());
+    shader.setUniformMatrix4f("model", modelMatrix);
+    shader.setUniform2fv("uvCoords", bgLayer0Translate);;
+    shader.setUniform2fv("uvScale", bgLayer0Scale);
+    bgLayer0.getTexture().bind();
+    
+    ResourceLoader.getQuadMesh().renderInstanced(shader, 1);
+
+    bgLayer1Scale.set(HALF_WIDTH / 200f, HALF_HEIGHT / 200f);
+    shader.setUniform2fv("uvCoords", bgLayer1Translate);
+    shader.setUniform2fv("uvScale", bgLayer1Scale);
+    bgLayer1.getTexture().bind();
+    
+    ResourceLoader.getQuadMesh().renderInstanced(shader, 1);
+
+    bgLayer2Scale.set(HALF_WIDTH / 400f, HALF_HEIGHT / 400f);
+    shader.setUniform2fv("uvCoords", bgLayer2Translate);
+    shader.setUniform2fv("uvScale", bgLayer2Scale);
+    bgLayer2.getTexture().bind();
+    
+    ResourceLoader.getQuadMesh().renderInstanced(shader, 1);
   }
 }

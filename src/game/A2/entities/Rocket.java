@@ -1,6 +1,7 @@
 package game.A2.entities;
 
 import game.A2.PhysicsObject;
+import game.A2.AtlasSprite;
 import game.A2.StaticSprite;
 import game.A2.PlayerControls;
 import org.joml.Vector2f;
@@ -14,7 +15,10 @@ public class Rocket extends PhysicsObject {
 
   public Rocket() {
     super(new Vector2f());
-    setSprite(new StaticSprite("rocket"));
+    //setSprite(
+    //  new AtlasSprite("rocket", 6, 8)
+    //    .setActiveTexture(3, 3));
+    setSprite(new StaticSprite("rocketship"));
     setSize(20f);
     setMass(MASS);
     setMaximumVelocity(200f);

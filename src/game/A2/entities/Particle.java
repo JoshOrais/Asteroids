@@ -2,6 +2,7 @@ package game.A2.entities;
 
 import game.A2.PhysicsObject;
 import game.A2.StaticSprite;
+import game.A2.Sprite;
 
 import org.joml.Vector2f;
 
@@ -9,9 +10,13 @@ public class Particle extends PhysicsObject {
   private float lifespan;
 
   public Particle(String textureKey, Vector2f pos, Vector2f vel, float lifespan, float size) {
+    this(new StaticSprite(textureKey), pos, vel, lifespan, size);
+  }
+
+  public Particle(Sprite sprite, Vector2f pos, Vector2f vel, float lifespan, float size) {
     super(pos, vel);
     setSize(size);
-    setSprite(new StaticSprite(textureKey));
+    setSprite(sprite);
 
     this.lifespan = lifespan;
   }

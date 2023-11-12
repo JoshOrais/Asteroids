@@ -19,9 +19,11 @@ public class AtlasSprite extends Sprite {
     H = h;
   }
 
-  public void setActiveTexture(int x, int y) {
+  public AtlasSprite setActiveTexture(int x, int y) {
     float yTop = (float)(H - y - 1);
     getUVTranslate().set((float)x, (float)yTop);
+
+    return this;
   }
 
   public Texture getTexture() {

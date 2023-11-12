@@ -18,15 +18,17 @@ import org.joml.Vector3f;
 import engine.*;
 import game.A2.*;
 import game.A2.entities.*;
+import game.A2.hud.*;
 
 public class A2Game extends Game {
   public static final int SCREEN_WIDTH = 1280, SCREEN_HEIGHT = 720;
   public static final float GAME_WIDTH = 381.f, GAME_HEIGHT = 216.f;
-  public static final float ATTACK_CD = 0.25f;
+  public static final float ATTACK_CD = 0.372f;
 
   public static final float UI_VELOCITY_INDICATOR_MULT = 0.3f;
 
   private Vector2f camOffset = new Vector2f();
+  private Vector2f mousePosition = new Vector2f();
 
   private ArrayList<Asteroid> asteroids = new ArrayList<>();
   private ArrayList<Particle> particles = new ArrayList<>();
@@ -35,12 +37,22 @@ public class A2Game extends Game {
   private ArrayList<TimedAction> timedEvents = new ArrayList<>();
 
   private boolean firing = false;
+  private boolean mouseDown = false;
+  private boolean gameActive = false;
+  private boolean interruptUpdate = false;
 
   private Rocket PC;
   private GameObject velocityIndicator;
   private EntitySpawner entityGen = new EntitySpawner();  
+  private HealthBar hpbar;
+  private NewGameButton ngButton;
+  private ScoreDisplay scoreDisplay;
+  private ScoreDisplay scoreDisplaySmall;
+  private int score = 0;
 
   private float attackTimer = 0f;
+  private float playerHP = 1f;
+  private float paralyzeDuration = 0f;
 
   private Renderer renderer;
   private A2Game() {};
@@ -71,14 +83,20 @@ public class A2Game extends Game {
     PC = new Rocket();
     velocityIndicator = new GameObject(new Vector2f());
     velocityIndicator.setSize(10f);
-    velocityIndicator.setSprite(new StaticSprite("arrow"));
+    velocityIndicator.setSprite(
+      new AtlasSprite("rocket", 6, 8)
+        .setActiveTexture(5, 1));
+    hpbar = new HealthBar(20f, 700f, 200f, 40f);
+    ngButton = new NewGameButton(540f, 310f, 200f, 40f);
+    scoreDisplay = new ScoreDisplay(620f, 500f, 40f, 100f);
+    scoreDisplaySmall = new ScoreDisplay(630f, 700f, 20f, 50f);
 
     timedEvents.add(
       new TimedAction(e -> {
         float px = -20f * (float)Math.cos(PC.getRotation());
         float py = -20f * (float)Math.sin(PC.getRotation());
         entityGen.spawnParticle(
-          "smoke_01", 
+          new AtlasSprite("rocket", 6, 8).setActiveTexture(2, 4), 
           PC.getPosition().add(px, py, new Vector2f()),
           PC.getVelocity().mul(-0.5f, new Vector2f()),
           0.5f, 35f, 30f, 0f
@@ -94,9 +112,21 @@ public class A2Game extends Game {
 
   @Override
   public void update(float dt) {
+    if (paralyzeDuration > 0f) {
+      paralyzeDuration -= dt;
+    }
+
+    if (interruptUpdate) {
+      return;
+    }
+    
+    if (playerHP <= 0) {
+      gameOver();
+    }
+
     attackTimer += dt;
     if (firing && attackTimer > ATTACK_CD) {
-      attackTimer = attackTimer % ATTACK_CD;
+      attackTimer = 0f;
       
       entityGen.spawnBullet(PC.getPosition(), PC.getVelocity(), PC.getRotation(), 1f, 1f);
     }
@@ -108,16 +138,21 @@ public class A2Game extends Game {
       ta.countdown(dt);
     }
 
-    for (PhysicsObject go: asteroids) {
+    for (Asteroid go: asteroids) {
       go.update(dt);
       for (PhysicsObject go2: asteroids) {
         if (go == go2) continue;
  
         collideWithPhysics(go, go2);
       }
-      collideWithPhysics(go, PC);
+      if (collideWithPhysics(go, PC)) {
+        playerHP -= go.getDamage();
+        hpbar.setHPPercentage(playerHP);
+      }
       bound(go.getPosition());
       if (go.isDead()) {
+        score += 10;
+        scoreDisplaySmall.setScore(score);
         deadThings.add(go);
       }
     }
@@ -153,6 +188,7 @@ public class A2Game extends Game {
     camOffset.sub(PC.getVelocity().mul(dt, new Vector2f()));
     renderer.setCameraPosition(PC.getPosition().add(camOffset, new Vector2f()));
     cameraInterpolate(camOffset, dt);
+    renderer.updateParrallax(PC.getVelocity());
 
     entityGen.dumpParticles(particles);
     entityGen.dumpBullets(bullets);
@@ -162,6 +198,30 @@ public class A2Game extends Game {
     particles.removeAll(deadThings);
     bullets.removeAll(deadThings);
     deadThings.clear();
+    
+    System.out.println(mouseDown);
+    ngButton.mouseInput(mousePosition, false);
+    if (!gameActive && ngButton.isMouseOver() && mouseDown) {
+      gameStart();
+    }
+  }
+
+  private void gameOver() {
+    PC.getPosition().set(0f, 0f);
+    PC.getVelocity().set(0f, 0f);
+    paralyzeDuration = 1f;
+    playerHP = 1f;
+    scoreDisplay.setScore(score);
+    score = 0;
+    scoreDisplaySmall.setScore(0);
+    hpbar.setHPPercentage(1f);
+    gameActive = false;
+  }
+
+  private void gameStart() {
+    gameActive = true;
+    paralyzeDuration = 0f;
+    System.out.println("GAME STARTED");
   }
 
   public void placeVelocityIndicator() {
@@ -169,6 +229,7 @@ public class A2Game extends Game {
     if (PC.getVelocity().y < 0) {
       angle = -angle;
     }
+
     PC.getPosition().add(PC.getVelocity().mul(UI_VELOCITY_INDICATOR_MULT , new Vector2f()), velocityIndicator.getPosition());
     velocityIndicator.setRotation(angle);
   }
@@ -187,12 +248,23 @@ public class A2Game extends Game {
     );
     PC.getControls().setAccelerating(window.isKeyPressed(GLFW_KEY_UP));
     firing = window.isKeyPressed(GLFW_KEY_SPACE);
+
+    if (paralyzeDuration > 0f) {
+      PC.getControls().setAccelerating(false);
+      PC.getControls().setSteering(false, false);
+      firing = false;
+    }
+
+    double[] mousePos = window.getCursorPosition();
+    mousePosition.set(mousePos[0], SCREEN_HEIGHT - mousePos[1]);
+    mouseDown = window.isMouseDown();
   }
 
   @Override
   public void render(Window window) {
     glClear(GL_COLOR_BUFFER_BIT);
-  
+    
+    renderer.drawBackground();
     for (Bullet b: bullets) {
       renderer.render(b);
     }
@@ -205,14 +277,38 @@ public class A2Game extends Game {
       renderer.render(p);
     }
 
-
-
     renderer.render(velocityIndicator);
     renderer.render(PC);
+
+    renderer.renderHUD(hpbar);
+    if (gameActive) {
+      renderer.renderHUD(scoreDisplaySmall);
+    } else {
+      renderer.renderHUD(scoreDisplay);
+      renderer.renderHUD(ngButton);
+    }
+  }
+
+  public Vector2f toroidalDest(Vector2f a, Vector2f b) {
+    Vector2f dest = new Vector2f(b).sub(a);
+    if (dest.x > SCREEN_WIDTH / 2f) {
+      dest.set(dest.x - SCREEN_WIDTH, dest.y);
+    } else if (dest.x < -SCREEN_WIDTH / 2f) {
+      dest.set(dest.x + SCREEN_WIDTH, dest.y);
+    }
+
+    if (dest.y > SCREEN_HEIGHT / 2f) {
+      dest.set(dest.x, dest.y - SCREEN_HEIGHT);
+    } else if (dest.y < -SCREEN_HEIGHT / 2f) {
+      dest.set(dest.x, dest.y + SCREEN_HEIGHT);
+    }
+
+    return dest;
   }
 
   public boolean collide(GameObject a, GameObject b) {
-    Vector2f dest = b.getPosition().sub(a.getPosition(), new Vector2f());
+    //Vector2f dest = b.getPosition().sub(a.getPosition(), new Vector2f());
+    Vector2f dest = toroidalDest(a.getPosition(), b.getPosition());
     float collisionLength = a.getSize() + b.getSize();
     
     if (dest.length() > collisionLength) {
@@ -222,7 +318,8 @@ public class A2Game extends Game {
   }
 
   public boolean collideWithPhysics(PhysicsObject a, PhysicsObject b) {
-    Vector2f dest = b.getPosition().sub(a.getPosition(), new Vector2f());
+    //Vector2f dest = b.getPosition().sub(a.getPosition(), new Vector2f());
+    Vector2f dest = toroidalDest(a.getPosition(), b.getPosition());
     float collisionLength = a.getSize() + b.getSize();
     
     if (dest.length() > collisionLength) {
@@ -294,14 +391,17 @@ public class A2Game extends Game {
   }
 
   private void registerTextures() throws Exception {
-    ResourceLoader.addTexture("rocket",    "../res/textures/art_assets/ship.png");
+    ResourceLoader.addTexture("rocket",    "../res/textures/rocket.png");
+    ResourceLoader.addTexture("rocketship",    "../res/textures/rocket01.png");
     ResourceLoader.addTexture("font",      "../res/textures/font.png");
     ResourceLoader.addTexture("arrow",      "../res/textures/player.png");
     ResourceLoader.addTexture("stars",     "../res/textures/art_assets/cloud.png");
     ResourceLoader.addTexture("planets",   "../res/textures/art_assets/stars.png");
-    ResourceLoader.addTexture("nebula",    "../res/textures/art_assets/background.png");
+    ResourceLoader.addTexture("nebula",    "../res/textures/Nebula Blue.png");
+    ResourceLoader.addTexture("asteroid_field",    "../res/textures/asteroidField2.png");
+    ResourceLoader.addTexture("stars01",    "../res/textures/Stars Small_1.png");
     ResourceLoader.addTexture("bullet",    "../res/textures/art_assets/bullet.png");
-    ResourceLoader.addTexture("asteroid",  "../res/textures/art_assets/asteroid.png");
+    ResourceLoader.addTexture("asteroid",  "../res/textures/asteroid05.png");
     ResourceLoader.addTexture("heal",      "../res/textures/art_assets/healup.png");
     ResourceLoader.addTexture("triple",    "../res/textures/art_assets/trishot.png");
     ResourceLoader.addTexture("shield",    "../res/textures/art_assets/shieldup.png");
@@ -321,6 +421,20 @@ public class A2Game extends Game {
     ResourceLoader.addTexture("missile",   "../res/textures/art_assets/missile.png");
     ResourceLoader.addTexture("witch",   "../res/textures/art_assets/B_witch_run.png");
     ResourceLoader.addTexture("booms",   "../res/textures/booms.png");
+    ResourceLoader.addTexture("ui-barframe",   "../res/textures/bar.png");
+    ResourceLoader.addTexture("ui-barfill",   "../res/textures/hpbar.png");
+    ResourceLoader.addTexture("ui-newgame",   "../res/textures/new-game.png");
+    ResourceLoader.addTexture("ui-newgame-active",   "../res/textures/new-game-active.png");
+    ResourceLoader.addTexture("ui-glyph-0",   "../res/textures/glyphs/0.png");
+    ResourceLoader.addTexture("ui-glyph-1",   "../res/textures/glyphs/1.png");
+    ResourceLoader.addTexture("ui-glyph-2",   "../res/textures/glyphs/2.png");
+    ResourceLoader.addTexture("ui-glyph-3",   "../res/textures/glyphs/3.png");
+    ResourceLoader.addTexture("ui-glyph-4",   "../res/textures/glyphs/4.png");
+    ResourceLoader.addTexture("ui-glyph-5",   "../res/textures/glyphs/5.png");
+    ResourceLoader.addTexture("ui-glyph-6",   "../res/textures/glyphs/6.png");
+    ResourceLoader.addTexture("ui-glyph-7",   "../res/textures/glyphs/7.png");
+    ResourceLoader.addTexture("ui-glyph-8",   "../res/textures/glyphs/8.png");
+    ResourceLoader.addTexture("ui-glyph-9",   "../res/textures/glyphs/9.png");
   }
 
   public void dispose() {
