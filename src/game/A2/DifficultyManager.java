@@ -26,7 +26,7 @@ public class DifficultyManager {
     damageMult *= DAMAGE_GROWTH_PER_DIFFICULTY_STEP;
   }
 
-  public void resetDifficulty() {
+  public void reset() {
     difficultyStep = 0;
     damageMult = 1f;
   }

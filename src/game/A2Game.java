@@ -27,6 +27,8 @@ public class A2Game extends Game {
 
   public static final float UI_VELOCITY_INDICATOR_MULT = 0.3f;
 
+  private int score = 0;
+
   private Vector2f camOffset = new Vector2f();
   private Vector2f mousePosition = new Vector2f();
 
@@ -40,6 +42,7 @@ public class A2Game extends Game {
   private boolean mouseDown = false;
   private boolean gameActive = false;
   private boolean interruptUpdate = false;
+  private boolean levelUpScreen = false;
 
   private Rocket PC;
   private GameObject velocityIndicator;
@@ -48,7 +51,9 @@ public class A2Game extends Game {
   private NewGameButton ngButton;
   private ScoreDisplay scoreDisplay;
   private ScoreDisplay scoreDisplaySmall;
-  private int score = 0;
+  private CardDisplay cardDisplay;
+  private DifficultyManager diffMan;
+  private PowersManager powMan;
 
   private float attackTimer = 0f;
   private float playerHP = 1f;
@@ -90,6 +95,11 @@ public class A2Game extends Game {
     ngButton = new NewGameButton(540f, 310f, 200f, 40f);
     scoreDisplay = new ScoreDisplay(620f, 500f, 40f, 100f);
     scoreDisplaySmall = new ScoreDisplay(630f, 700f, 20f, 50f);
+    cardDisplay = new CardDisplay(552.5f, 460f, 175f, 200f);
+  
+    diffMan = new DifficultyManager(entityGen);
+    powMan = new PowersManager();
+    cardDisplay.setCards(powMan.rollPowerUp());
 
     timedEvents.add(
       new TimedAction(e -> {
@@ -119,15 +129,33 @@ public class A2Game extends Game {
     if (interruptUpdate) {
       return;
     }
+   
+    if (levelUpScreen) {
+      PowerUp pup = null;
+      if (mouseDown && (pup = cardDisplay.selectPowerUp(mousePosition)) != null ) {
+        pup.levelUp();
+        levelUpScreen = false;
+      }
+      return;
+    }
     
     if (playerHP <= 0) {
       gameOver();
     }
+  
+    if (asteroids.size() < 1) {
+      diffMan.spawnEnemies(PC.getPosition().x, PC.getPosition().y, SCREEN_WIDTH, SCREEN_HEIGHT);
+      if (gameActive) {
+        diffMan.advanceDifficulty();
+        cardDisplay.setCards(powMan.rollPowerUp());
+        levelUpScreen = true;
+      }
+    }
 
     attackTimer += dt;
-    if (firing && attackTimer > ATTACK_CD) {
+    if (firing && attackTimer > powMan.getFireCooldown()) {
       attackTimer = 0f;
-      
+      powMan.fireBullets(entityGen, PC);
       entityGen.spawnBullet(PC.getPosition(), PC.getVelocity(), PC.getRotation(), 1f, 1f);
     }
 
@@ -145,7 +173,7 @@ public class A2Game extends Game {
  
         collideWithPhysics(go, go2);
       }
-      if (collideWithPhysics(go, PC)) {
+      if (collideWithPhysics(go, PC) && gameActive) {
         playerHP -= go.getDamage();
         hpbar.setHPPercentage(playerHP);
       }
@@ -199,7 +227,6 @@ public class A2Game extends Game {
     bullets.removeAll(deadThings);
     deadThings.clear();
     
-    System.out.println(mouseDown);
     ngButton.mouseInput(mousePosition, false);
     if (!gameActive && ngButton.isMouseOver() && mouseDown) {
       gameStart();
@@ -221,6 +248,15 @@ public class A2Game extends Game {
   private void gameStart() {
     gameActive = true;
     paralyzeDuration = 0f;
+    diffMan.reset();
+    powMan.reset();
+    asteroids.clear();
+    bullets.clear();
+    particles.clear();
+    PC.getVelocity().set(0f, 0f);
+    score = 0;
+    diffMan.spawnEnemies(PC.getPosition().x, PC.getPosition().y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    entityGen.dumpEnemies(asteroids);
     System.out.println("GAME STARTED");
   }
 
@@ -286,6 +322,9 @@ public class A2Game extends Game {
     } else {
       renderer.renderHUD(scoreDisplay);
       renderer.renderHUD(ngButton);
+    }
+    if (levelUpScreen) {
+      renderer.renderHUD(cardDisplay);
     }
   }
 
@@ -435,6 +474,13 @@ public class A2Game extends Game {
     ResourceLoader.addTexture("ui-glyph-7",   "../res/textures/glyphs/7.png");
     ResourceLoader.addTexture("ui-glyph-8",   "../res/textures/glyphs/8.png");
     ResourceLoader.addTexture("ui-glyph-9",   "../res/textures/glyphs/9.png");
+    ResourceLoader.addTexture("ui-card-multishot",   "../res/textures/card-multishot.png");
+    ResourceLoader.addTexture("ui-card-range",   "../res/textures/card-range.png");
+    ResourceLoader.addTexture("ui-card-damage",   "../res/textures/card-damage.png");
+    ResourceLoader.addTexture("ui-card-size",   "../res/textures/card-size.png");
+    ResourceLoader.addTexture("ui-card-firerate",   "../res/textures/card-firerate.png");
+    ResourceLoader.addTexture("ui-card-p100",   "../res/textures/card-p100.png");
+    ResourceLoader.addTexture("ui-card-heal10",   "../res/textures/card-heal10.png");
   }
 
   public void dispose() {
